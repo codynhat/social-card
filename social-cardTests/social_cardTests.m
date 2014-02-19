@@ -7,8 +7,11 @@
 //
 
 #import <XCTest/XCTest.h>
+#import "SCTransfer.h"
 
-@interface social_cardTests : XCTestCase
+@interface social_cardTests : XCTestCase{
+    SCTransfer *scTransfer;
+}
 
 @end
 
@@ -17,7 +20,9 @@
 - (void)setUp
 {
     [super setUp];
-    // Put setup code here. This method is called before the invocation of each test method in the class.
+
+    scTransfer = [SCTransfer sharedInstance];
+    
 }
 
 - (void)tearDown
@@ -26,9 +31,10 @@
     [super tearDown];
 }
 
-- (void)testExample
+- (void)testSetup
 {
-    XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
+    XCTAssertNoThrow([scTransfer performSelector:@selector(start) withObject:nil afterDelay:3.0], @"Exception thrown while setting up");
 }
+
 
 @end
