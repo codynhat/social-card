@@ -11,6 +11,7 @@
 
 @interface SCFindPeopleViewController : UITableViewController <SCTransferDelegate>{
     NSMutableArray *peers;
+    NSMutableArray *connectedPeers;
 }
 
 @end

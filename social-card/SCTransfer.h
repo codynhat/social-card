@@ -13,6 +13,7 @@
 
 - (void)foundPeer:(MCPeerID*)peer;
 - (void)lostPeer:(MCPeerID*)peer;
+- (void)peer:(MCPeerID *)peerID didChangeState:(MCSessionState)state;
 
 @end
 
@@ -20,12 +21,14 @@
     NSMutableArray *sessions;
     NSMutableArray *invites;
     NSMutableArray *inviteBlocks;
+    NSMutableArray *sentInvites;
 }
 
 @property (strong, nonatomic) id<SCTransferDelegate> delegate;
 
 @property (strong, nonatomic) MCNearbyServiceBrowser *browser;
 @property (strong, nonatomic) MCNearbyServiceAdvertiser *advertiser;
+
 
 +(SCTransfer*)sharedInstance;
 
@@ -34,5 +37,8 @@
 -(void)startBrowsing;
 
 -(void)invitePeer:(MCPeerID*)peer;
+-(NSArray*)sentInvites;
+
+-(NSArray*)allConnectedDevices;
 
 @end

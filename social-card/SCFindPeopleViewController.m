@@ -7,6 +7,7 @@
 //
 
 #import "SCFindPeopleViewController.h"
+#import "SCPersonCell.h"
 
 @interface SCFindPeopleViewController ()
 
@@ -23,11 +24,19 @@
     return self;
 }
 
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    
+    [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 
     peers = [NSMutableArray new];
+    connectedPeers = [NSMutableArray new];
+    
     [[SCTransfer sharedInstance] start];
     [SCTransfer sharedInstance].delegate = self;
 }
@@ -52,12 +61,19 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    static NSString *CellIdentifier = @"personCell";
+    SCPersonCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     MCPeerID *peer_id = [peers objectAtIndex:indexPath.row];
     
-    cell.textLabel.text = peer_id.displayName;
+    [cell.activityIndicator stopAnimating];
+    
+    cell.name.text = peer_id.displayName;
+    
+    if ([[[SCTransfer sharedInstance] sentInvites] containsObject:peer_id]) {
+        [cell.activityIndicator startAnimating];
+    }
+    
     
     return cell;
 }
@@ -65,7 +81,11 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     MCPeerID *peer_id = [peers objectAtIndex:indexPath.row];
 
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
     [[SCTransfer sharedInstance] invitePeer:peer_id];
+    
+    [self.tableView reloadData];
 }
 
 
@@ -79,6 +99,15 @@
 -(void)lostPeer:(MCPeerID *)peer{
     [peers removeObject:peer];
     [self.tableView reloadData];
+}
+
+-(void)peer:(MCPeerID *)peerID didChangeState:(MCSessionState)state{
+    if (state == 2) {
+        // If connected
+        //[connectedPeers addObject:peerID];
+        [self.tableView reloadData];
+    }
+    
 }
 
 @end

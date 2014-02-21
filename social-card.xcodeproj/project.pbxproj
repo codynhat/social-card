@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C383E31C18B6C1AE001EECDF /* SCPersonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C383E31B18B6C1AE001EECDF /* SCPersonCell.m */; };
 		C3B8D59B18AADCCC00DE4B0A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3B8D59A18AADCCC00DE4B0A /* Foundation.framework */; };
 		C3B8D59D18AADCCC00DE4B0A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3B8D59C18AADCCC00DE4B0A /* CoreGraphics.framework */; };
 		C3B8D59F18AADCCC00DE4B0A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3B8D59E18AADCCC00DE4B0A /* UIKit.framework */; };
@@ -36,6 +37,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C383E31A18B6C1AE001EECDF /* SCPersonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPersonCell.h; sourceTree = "<group>"; };
+		C383E31B18B6C1AE001EECDF /* SCPersonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPersonCell.m; sourceTree = "<group>"; };
 		C3B8D59718AADCCC00DE4B0A /* social-card.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "social-card.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C3B8D59A18AADCCC00DE4B0A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C3B8D59C18AADCCC00DE4B0A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -126,6 +129,8 @@
 				C3BE139F18B41B5300206924 /* SCFindPeopleViewController.m */,
 				C3B8D5D018AADE0F00DE4B0A /* SCTransfer.h */,
 				C3B8D5D118AADE0F00DE4B0A /* SCTransfer.m */,
+				C383E31A18B6C1AE001EECDF /* SCPersonCell.h */,
+				C383E31B18B6C1AE001EECDF /* SCPersonCell.m */,
 				C3B8D5B218AADCCC00DE4B0A /* Images.xcassets */,
 				C3B8D5A118AADCCC00DE4B0A /* Supporting Files */,
 			);
@@ -284,6 +289,7 @@
 				C3B8D5D218AADE0F00DE4B0A /* SCTransfer.m in Sources */,
 				C3BE13A018B41B5300206924 /* SCFindPeopleViewController.m in Sources */,
 				C3B8D5A718AADCCC00DE4B0A /* main.m in Sources */,
+				C383E31C18B6C1AE001EECDF /* SCPersonCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -416,7 +422,7 @@
 				GCC_PREFIX_HEADER = "social-card/social-card-Prefix.pch";
 				INFOPLIST_FILE = "social-card/social-card-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "D34EE7A4-7677-444C-BAFC-452E2BDFB0E4";
+				PROVISIONING_PROFILE = "5B1F182D-FD1D-4568-8442-A757D84EC29E";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -432,7 +438,7 @@
 				GCC_PREFIX_HEADER = "social-card/social-card-Prefix.pch";
 				INFOPLIST_FILE = "social-card/social-card-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "D34EE7A4-7677-444C-BAFC-452E2BDFB0E4";
+				PROVISIONING_PROFILE = "5B1F182D-FD1D-4568-8442-A757D84EC29E";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

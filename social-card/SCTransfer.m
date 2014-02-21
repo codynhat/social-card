@@ -47,6 +47,7 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
         // Initialize
         invites = [NSMutableArray new];
         inviteBlocks = [NSMutableArray new];
+        sentInvites = [NSMutableArray new];
    
     }
     return self;
@@ -65,6 +66,10 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
 -(void)startBrowsing{
     NSLog(@"Started browsing...");
     [_browser startBrowsingForPeers];
+}
+
+-(NSArray*)sentInvites{
+    return [NSArray arrayWithArray:sentInvites];
 }
 
 -(void)invitePeer:(MCPeerID*)peer{
@@ -94,6 +99,7 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
         NSUInteger index = [invites indexOfObject:peer];
         void (^invitationHandler)(BOOL, MCSession *) = [inviteBlocks objectAtIndex:index];
         invitationHandler(YES, session);
+        [sentInvites addObject:peer];
         
         [inviteBlocks removeObjectAtIndex:index];
         [invites removeObjectAtIndex:index];
@@ -101,14 +107,28 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
     else{
         // No invite yet, send one
         [_browser invitePeer:peer toSession:session withContext:nil timeout:30];
+        [sentInvites addObject:peer];
     }
 }
 
+-(NSArray*)allConnectedDevices{
+    NSMutableArray *array = [NSMutableArray new];
+    
+    for (MCSession *s in sessions){
+        [array addObjectsFromArray:s.connectedPeers];
+    }
+    
+    NSLog(@"Connected Peers: %@", array);
+    
+    return [NSArray arrayWithArray:array];
+}
 
 #pragma mark MCSessionDelete methods
 
 -(void)session:(MCSession *)session peer:(MCPeerID *)peerID didChangeState:(MCSessionState)state{
-    NSLog(@"Session peer: %@ \n changed state:%ld", peerID, state);
+    NSLog(@"Session peer: %@ \n changed state:%d", peerID, state);
+    [_delegate peer:peerID didChangeState:state];
+    [sentInvites removeObject:peerID];
 }
 
 #pragma mark MCNearbyServiceBrowser Delegate methods
