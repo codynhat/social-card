@@ -123,6 +123,22 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
     return [NSArray arrayWithArray:array];
 }
 
+
+-(void)sendContact:(NSData*)contact toPeer:(MCPeerID*)peer{
+    MCSession *session = nil;
+    
+    // Get the  session with the peer
+    for (MCSession *s in sessions){
+        if ([s.connectedPeers containsObject:peer]){
+            session = s;
+            break;
+        }
+    }
+    
+    [session sendData:contact toPeers:[NSArray arrayWithObject:peer] withMode:MCSessionSendDataReliable error:nil];
+    
+}
+
 #pragma mark MCSessionDelete methods
 
 -(void)session:(MCSession *)session peer:(MCPeerID *)peerID didChangeState:(MCSessionState)state{
@@ -130,6 +146,10 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
     [sentInvites removeObject:peerID];
     [_delegate peer:peerID didChangeState:state];
     
+}
+
+-(void)session:(MCSession *)session didReceiveData:(NSData *)data fromPeer:(MCPeerID *)peerID{
+    NSLog(@"Session received data: %@", [NSKeyedUnarchiver unarchiveObjectWithData:data]);
 }
 
 #pragma mark MCNearbyServiceBrowser Delegate methods

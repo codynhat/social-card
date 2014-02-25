@@ -41,4 +41,6 @@
 
 -(NSArray*)allConnectedDevices;
 
+-(void)sendContact:(NSData*)contact toPeer:(MCPeerID*)peer;
+
 @end
