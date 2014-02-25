@@ -139,6 +139,50 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
     
 }
 
+-(void)addContact:(NSData*)contact{
+    NSDictionary *c = [NSKeyedUnarchiver unarchiveObjectWithData:contact];
+    
+    
+    ABAddressBookRef addressBook;
+    bool wantToSaveChanges = YES;
+    bool didSave;
+    CFErrorRef error = NULL;
+    
+    addressBook = ABAddressBookCreateWithOptions(nil, nil);
+    
+    
+    
+    ABRecordRef record;
+    record = ABPersonCreate();
+    ABRecordSetValue(record, kABPersonFirstNameProperty, (__bridge CFTypeRef)([c objectForKey:@"first_name"]), nil);
+    ABRecordSetValue(record, kABPersonLastNameProperty, (__bridge CFTypeRef)([c objectForKey:@"last_name"]), nil);
+    
+    ABMutableMultiValueRef phoneNumberMultiValue =
+    ABMultiValueCreateMutable(kABPersonPhoneProperty);
+    ABMultiValueAddValueAndLabel(phoneNumberMultiValue ,(__bridge CFTypeRef)([c objectForKey:@"phone_number"]) ,kABPersonPhoneMobileLabel, NULL);
+    
+    ABRecordSetValue(record, kABPersonPhoneProperty, phoneNumberMultiValue, nil);
+
+    
+    ABAddressBookAddRecord(addressBook, record, nil);
+    
+    
+    
+    
+    if (ABAddressBookHasUnsavedChanges(addressBook)) {
+        if (wantToSaveChanges) {
+            didSave = ABAddressBookSave(addressBook, &error);
+            if (!didSave) {
+                
+            }
+        } else {
+            ABAddressBookRevert(addressBook);
+        }
+    }
+    
+    CFRelease(addressBook);
+}
+
 #pragma mark MCSessionDelete methods
 
 -(void)session:(MCSession *)session peer:(MCPeerID *)peerID didChangeState:(MCSessionState)state{
@@ -150,6 +194,29 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
 
 -(void)session:(MCSession *)session didReceiveData:(NSData *)data fromPeer:(MCPeerID *)peerID{
     NSLog(@"Session received data: %@", [NSKeyedUnarchiver unarchiveObjectWithData:data]);
+    ABAddressBookRef addressBook;
+    
+    addressBook = ABAddressBookCreateWithOptions(nil, nil);
+    
+    if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusNotDetermined) {
+        ABAddressBookRequestAccessWithCompletion(addressBook, ^(bool granted, CFErrorRef error) {
+            if (granted) {
+                [self addContact:data];
+
+                
+            } else {
+                
+            }
+        });
+    }
+    else if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized) {
+        [self addContact:data];
+
+        
+    }
+    else {
+        
+    }
 }
 
 #pragma mark MCNearbyServiceBrowser Delegate methods

@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <MultipeerConnectivity/MultipeerConnectivity.h>
+#import <AddressBook/AddressBook.h>
 
 @protocol SCTransferDelegate
 
@@ -42,5 +43,6 @@
 -(NSArray*)allConnectedDevices;
 
 -(void)sendContact:(NSData*)contact toPeer:(MCPeerID*)peer;
+-(void)addContact:(NSData*)contact;
 
 @end

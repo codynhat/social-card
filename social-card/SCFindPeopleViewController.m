@@ -121,7 +121,7 @@
         
         // Send a sample contact
         
-        NSDictionary *c = [NSDictionary dictionaryWithObjectsAndKeys:@"Cody", @"first_name", @"Hatfield", @"last_name", @"4254573992", @"phone_number", nil];
+        NSDictionary *c = [NSDictionary dictionaryWithObjectsAndKeys:@"John", @"first_name", @"Doe", @"last_name", @"4254573992", @"phone_number", nil];
         NSData *contact = [NSKeyedArchiver archivedDataWithRootObject:c];
         
         [[SCTransfer sharedInstance] sendContact:contact toPeer:peerID];
