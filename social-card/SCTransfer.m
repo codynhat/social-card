@@ -127,8 +127,9 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
 
 -(void)session:(MCSession *)session peer:(MCPeerID *)peerID didChangeState:(MCSessionState)state{
     NSLog(@"Session peer: %@ \n changed state:%d", peerID, state);
-    [_delegate peer:peerID didChangeState:state];
     [sentInvites removeObject:peerID];
+    [_delegate peer:peerID didChangeState:state];
+    
 }
 
 #pragma mark MCNearbyServiceBrowser Delegate methods

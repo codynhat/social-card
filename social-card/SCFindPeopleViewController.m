@@ -51,12 +51,18 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return peers.count;
+    if (section == 0) {
+        return connectedPeers.count;
+    }
+    else{
+        return peers.count;
+    }
+    
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -64,15 +70,21 @@
     static NSString *CellIdentifier = @"personCell";
     SCPersonCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
-    MCPeerID *peer_id = [peers objectAtIndex:indexPath.row];
+    //[cell.activityIndicator stopAnimating];
+    NSArray *p;
+    if (indexPath.section == 0) {
+        p = connectedPeers;
+        //[cell.activityIndicator startAnimating];
+        cell.name.textColor = [UIColor greenColor];
+    }
+    else{
+        p = peers;
+  
+    }
     
-    [cell.activityIndicator stopAnimating];
+    MCPeerID *peer_id = [p objectAtIndex:indexPath.row];
     
     cell.name.text = peer_id.displayName;
-    
-    if ([[[SCTransfer sharedInstance] sentInvites] containsObject:peer_id]) {
-        [cell.activityIndicator startAnimating];
-    }
     
     
     return cell;
@@ -85,7 +97,6 @@
     
     [[SCTransfer sharedInstance] invitePeer:peer_id];
     
-    [self.tableView reloadData];
 }
 
 
@@ -104,7 +115,8 @@
 -(void)peer:(MCPeerID *)peerID didChangeState:(MCSessionState)state{
     if (state == 2) {
         // If connected
-        //[connectedPeers addObject:peerID];
+        [connectedPeers addObject:peerID];
+        [peers removeObject:peerID];
         [self.tableView reloadData];
     }
     
