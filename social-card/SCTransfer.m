@@ -48,6 +48,10 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
         invites = [NSMutableArray new];
         inviteBlocks = [NSMutableArray new];
         sentInvites = [NSMutableArray new];
+        
+        
+        _contactInfo = [[NSUserDefaults standardUserDefaults] objectForKey:@"contactInfo"];
+
    
     }
     return self;
@@ -183,6 +187,12 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
     CFRelease(addressBook);
     
     [_delegate didFinishAddingContact:contact];
+}
+
+
+-(void)setContactInfo:(NSData *)contactInfo{
+    [[NSUserDefaults standardUserDefaults] setObject:contactInfo forKey:@"contactInfo"];
+    _contactInfo = contactInfo;
 }
 
 #pragma mark MCSessionDelete methods

@@ -30,6 +30,7 @@
 
 @property (strong, nonatomic) MCNearbyServiceBrowser *browser;
 @property (strong, nonatomic) MCNearbyServiceAdvertiser *advertiser;
+@property (strong, nonatomic) NSData *contactInfo;
 
 
 +(SCTransfer*)sharedInstance;
