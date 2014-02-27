@@ -181,6 +181,8 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
     }
     
     CFRelease(addressBook);
+    
+    [_delegate didFinishAddingContact:contact];
 }
 
 #pragma mark MCSessionDelete methods

@@ -8,10 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "SCTransfer.h"
+#import "MBProgressHUD.h"
 
 @interface SCFindPeopleViewController : UITableViewController <SCTransferDelegate>{
     NSMutableArray *peers;
     NSMutableArray *connectedPeers;
 }
+
 
 @end

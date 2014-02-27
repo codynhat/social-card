@@ -117,7 +117,11 @@
         // If connected
         [connectedPeers addObject:peerID];
         [peers removeObject:peerID];
-        [self.tableView reloadData];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+        });
+        
         
         // Send a sample contact
         
@@ -126,6 +130,20 @@
         
         [[SCTransfer sharedInstance] sendContact:contact toPeer:peerID];
     }
+    
+}
+
+- (void)didFinishAddingContact:(NSData*)contact{
+    NSDictionary *c = [NSKeyedUnarchiver unarchiveObjectWithData:contact];
+
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+        [hud setMode:MBProgressHUDModeText];
+        
+        [hud setLabelText:[NSString stringWithFormat:@"\"%@ %@\" was added.", [c objectForKey:@"first_name"], [c objectForKey:@"last_name"] ]];
+        [hud hide:YES afterDelay:2.0];
+    });
     
 }
 
