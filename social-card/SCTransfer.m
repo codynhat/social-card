@@ -27,8 +27,20 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
 
 -(id)init{
     if (self = [super init]) {
+        
+        _contactInfo = [[NSUserDefaults standardUserDefaults] objectForKey:@"contactInfo"];
+        MCPeerID *peer_id;
         // Create Peer ID
-        MCPeerID *peer_id = [[MCPeerID alloc] initWithDisplayName:[[UIDevice currentDevice] name]];
+        if (_contactInfo) {
+            NSDictionary *c = [NSKeyedUnarchiver unarchiveObjectWithData:_contactInfo];
+            NSString *name = [NSString stringWithFormat:@"%@ %@", [c objectForKey:@"first_name"], [c objectForKey:@"last_name"] ];
+            peer_id = [[MCPeerID alloc] initWithDisplayName:name];
+        }
+        else{
+            peer_id = [[MCPeerID alloc] initWithDisplayName:[[UIDevice currentDevice] name]];
+        }
+
+        
         
         // Create an initial session
         sessions = [NSMutableArray new];
@@ -50,7 +62,6 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
         sentInvites = [NSMutableArray new];
         
         
-        _contactInfo = [[NSUserDefaults standardUserDefaults] objectForKey:@"contactInfo"];
 
    
     }
