@@ -70,21 +70,24 @@
     static NSString *CellIdentifier = @"personCell";
     SCPersonCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
-    //[cell.activityIndicator stopAnimating];
+    [cell.activityIndicator stopAnimating];
     NSArray *p;
     if (indexPath.section == 0) {
         p = connectedPeers;
-        //[cell.activityIndicator startAnimating];
+        
         cell.name.textColor = [UIColor greenColor];
     }
     else{
         p = peers;
-  
     }
     
     MCPeerID *peer_id = [p objectAtIndex:indexPath.row];
     
     cell.name.text = peer_id.displayName;
+    
+    if (p == peers && [[[SCTransfer sharedInstance] sentInvites] containsObject:peer_id]) {
+        [cell.activityIndicator startAnimating];
+    }
     
     
     return cell;
@@ -97,6 +100,9 @@
     
     [[SCTransfer sharedInstance] invitePeer:peer_id];
     
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+    });
 }
 
 
