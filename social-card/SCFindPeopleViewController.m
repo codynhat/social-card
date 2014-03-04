@@ -117,6 +117,10 @@
     
     [[SCTransfer sharedInstance] invitePeer:peer_id];
     
+    float r = ((arc4random() % 40) + 30)/10;
+    [[SCTransfer sharedInstance] performSelector:@selector(invitePeer:) withObject:peer_id afterDelay:r];
+
+    
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.tableView reloadData];
     });

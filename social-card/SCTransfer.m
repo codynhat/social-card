@@ -62,6 +62,7 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
         sentInvites = [NSMutableArray new];
         
         
+        
 
    
     }
@@ -110,6 +111,8 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
     }
     
     if ([invites containsObject:peer]) {
+        NSLog(@"Accepting Invite...");
+
         // Invite was already received, accept it
         NSUInteger index = [invites indexOfObject:peer];
         void (^invitationHandler)(BOOL, MCSession *) = [inviteBlocks objectAtIndex:index];
@@ -121,9 +124,13 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
     }
     else{
         // No invite yet, send one
+        NSLog(@"Sending Invite...");
         [_browser invitePeer:peer toSession:session withContext:nil timeout:30];
         [sentInvites addObject:peer];
+        
+        
     }
+    
 }
 
 -(NSArray*)allConnectedDevices{

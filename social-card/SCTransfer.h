@@ -24,6 +24,7 @@
     NSMutableArray *invites;
     NSMutableArray *inviteBlocks;
     NSMutableArray *sentInvites;
+    
 }
 
 @property (strong, nonatomic) id<SCTransferDelegate> delegate;
