@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SCContactInfoViewController : UIViewController
+@interface SCContactInfoViewController : UIViewController <UITextFieldDelegate>
 
 - (IBAction)done:(id)sender;
 
