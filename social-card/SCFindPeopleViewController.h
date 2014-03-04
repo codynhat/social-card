@@ -15,5 +15,7 @@
     NSMutableArray *connectedPeers;
 }
 
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *settingsButton;
 
+- (IBAction)settings:(id)sender;
 @end

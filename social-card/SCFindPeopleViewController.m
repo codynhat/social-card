@@ -8,6 +8,7 @@
 
 #import "SCFindPeopleViewController.h"
 #import "SCPersonCell.h"
+#import "SCContactInfoViewController.h"
 
 @interface SCFindPeopleViewController ()
 
@@ -39,6 +40,10 @@
     
     [[SCTransfer sharedInstance] start];
     [SCTransfer sharedInstance].delegate = self;
+    
+    UIFont *customFont = [UIFont fontWithName:@"Helvetica" size:24.0];
+    NSDictionary *fontDictionary = @{NSFontAttributeName : customFont};
+    [_settingsButton setTitleTextAttributes:fontDictionary forState:UIControlStateNormal];
 }
 
 - (void)didReceiveMemoryWarning
@@ -46,6 +51,18 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+
+- (IBAction)settings:(id)sender {
+    
+    SCContactInfoViewController *contact = [self.storyboard instantiateViewControllerWithIdentifier:@"contactInfo"];
+    
+    [self.navigationController setViewControllers:[NSArray arrayWithObjects:contact, self, nil]];
+    
+    [self.navigationController popViewControllerAnimated:YES];
+
+}
+
 
 #pragma mark - Table view data source
 

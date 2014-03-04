@@ -29,7 +29,18 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
+	
+    SCTransfer *scTransfer = [SCTransfer sharedInstance];
+    
+    if ([scTransfer contactInfo]) {
+        NSDictionary *contact = [NSKeyedUnarchiver unarchiveObjectWithData:[scTransfer contactInfo]];
+        
+        [firstNameField setText:[contact objectForKey:@"first_name"]];
+        [lastNameField setText:[contact objectForKey:@"last_name"]];
+        [numberField setText:[contact objectForKey:@"phone_number"]];
+    }
+    
+    
 }
 
 - (void)didReceiveMemoryWarning
