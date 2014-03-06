@@ -9,6 +9,7 @@
 #import "SCNavigationController.h"
 #import "SCFindPeopleViewController.h"
 #import "SCContactInfoViewController.h"
+#import "UIColor+SCColor.h"
 
 @interface SCNavigationController ()
 
@@ -29,6 +30,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [self.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:@"Play-Bold" size:20.0], NSFontAttributeName, [UIColor scTextColor], NSForegroundColorAttributeName, nil]];
+    [self.navigationBar setBarTintColor:[UIColor scBackgroundColor]];
+    [self.navigationBar setTintColor:[UIColor scTextColor]];
     
     [self checkForContactInfo];
 }

@@ -27,6 +27,10 @@
 		C3B8D5D218AADE0F00DE4B0A /* SCTransfer.m in Sources */ = {isa = PBXBuildFile; fileRef = C3B8D5D118AADE0F00DE4B0A /* SCTransfer.m */; };
 		C3B8D5D418AAE2A300DE4B0A /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3B8D5D318AAE2A300DE4B0A /* CoreBluetooth.framework */; };
 		C3BE13A018B41B5300206924 /* SCFindPeopleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C3BE139F18B41B5300206924 /* SCFindPeopleViewController.m */; };
+		C3ED0FDC18C92C490014D420 /* OFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = C3ED0FD918C92C490014D420 /* OFL.txt */; };
+		C3ED0FDD18C92C490014D420 /* Play-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C3ED0FDA18C92C490014D420 /* Play-Bold.ttf */; };
+		C3ED0FDE18C92C490014D420 /* Play-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C3ED0FDB18C92C490014D420 /* Play-Regular.ttf */; };
+		C3ED0FE418C9331D0014D420 /* UIColor+SCColor.m in Sources */ = {isa = PBXBuildFile; fileRef = C3ED0FE318C9331D0014D420 /* UIColor+SCColor.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +74,11 @@
 		C3B8D5D318AAE2A300DE4B0A /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
 		C3BE139E18B41B5300206924 /* SCFindPeopleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCFindPeopleViewController.h; sourceTree = "<group>"; };
 		C3BE139F18B41B5300206924 /* SCFindPeopleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCFindPeopleViewController.m; sourceTree = "<group>"; };
+		C3ED0FD918C92C490014D420 /* OFL.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = OFL.txt; sourceTree = "<group>"; };
+		C3ED0FDA18C92C490014D420 /* Play-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Play-Bold.ttf"; sourceTree = "<group>"; };
+		C3ED0FDB18C92C490014D420 /* Play-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Play-Regular.ttf"; sourceTree = "<group>"; };
+		C3ED0FE218C9331D0014D420 /* UIColor+SCColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+SCColor.h"; sourceTree = "<group>"; };
+		C3ED0FE318C9331D0014D420 /* UIColor+SCColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+SCColor.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +110,8 @@
 		C3B8D58E18AADCCC00DE4B0A = {
 			isa = PBXGroup;
 			children = (
+				C3ED0FE518C935D00014D420 /* Colors */,
+				C3ED0FD818C92C490014D420 /* Play */,
 				C3B8D5A018AADCCC00DE4B0A /* social-card */,
 				C3B8D5BF18AADCCC00DE4B0A /* social-cardTests */,
 				C3B8D59918AADCCC00DE4B0A /* Frameworks */,
@@ -180,6 +191,25 @@
 				C3B8D5C218AADCCC00DE4B0A /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		C3ED0FD818C92C490014D420 /* Play */ = {
+			isa = PBXGroup;
+			children = (
+				C3ED0FD918C92C490014D420 /* OFL.txt */,
+				C3ED0FDA18C92C490014D420 /* Play-Bold.ttf */,
+				C3ED0FDB18C92C490014D420 /* Play-Regular.ttf */,
+			);
+			path = Play;
+			sourceTree = "<group>";
+		};
+		C3ED0FE518C935D00014D420 /* Colors */ = {
+			isa = PBXGroup;
+			children = (
+				C3ED0FE218C9331D0014D420 /* UIColor+SCColor.h */,
+				C3ED0FE318C9331D0014D420 /* UIColor+SCColor.m */,
+			);
+			name = Colors;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -266,7 +296,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				C3B8D5B318AADCCC00DE4B0A /* Images.xcassets in Resources */,
+				C3ED0FDE18C92C490014D420 /* Play-Regular.ttf in Resources */,
+				C3ED0FDD18C92C490014D420 /* Play-Bold.ttf in Resources */,
 				C3B8D5A518AADCCC00DE4B0A /* InfoPlist.strings in Resources */,
+				C3ED0FDC18C92C490014D420 /* OFL.txt in Resources */,
 				C3B8D5AE18AADCCC00DE4B0A /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -334,6 +367,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C3B8D5AB18AADCCC00DE4B0A /* SCAppDelegate.m in Sources */,
+				C3ED0FE418C9331D0014D420 /* UIColor+SCColor.m in Sources */,
 				C32960F718BFF80400091254 /* SCNavigationController.m in Sources */,
 				C3B8D5D218AADE0F00DE4B0A /* SCTransfer.m in Sources */,
 				C3BE13A018B41B5300206924 /* SCFindPeopleViewController.m in Sources */,

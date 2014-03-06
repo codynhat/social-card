@@ -9,6 +9,7 @@
 #import "SCFindPeopleViewController.h"
 #import "SCPersonCell.h"
 #import "SCContactInfoViewController.h"
+#import "UIColor+SCColor.h"
 
 @interface SCFindPeopleViewController ()
 
@@ -44,6 +45,8 @@
     UIFont *customFont = [UIFont fontWithName:@"Helvetica" size:24.0];
     NSDictionary *fontDictionary = @{NSFontAttributeName : customFont};
     [_settingsButton setTitleTextAttributes:fontDictionary forState:UIControlStateNormal];
+    
+    [self.tableView setBackgroundColor:[UIColor scContentColor]];
 }
 
 - (void)didReceiveMemoryWarning
@@ -88,11 +91,14 @@
     SCPersonCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     [cell.activityIndicator stopAnimating];
+    
+    cell.name.font = [UIFont fontWithName:@"Play" size:18.0];
+    
     NSArray *p;
     if (indexPath.section == 0) {
         p = connectedPeers;
         
-        cell.name.textColor = [UIColor greenColor];
+        cell.name.textColor = [UIColor scGreenColor];
     }
     else{
         p = peers;
@@ -111,21 +117,32 @@
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    MCPeerID *peer_id = [peers objectAtIndex:indexPath.row];
+    
+    if (indexPath.section == 1) {
+        MCPeerID *peer_id = [peers objectAtIndex:indexPath.row];
+        
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        
+        [[SCTransfer sharedInstance] invitePeer:peer_id];
+        
+        float r = ((arc4random() % 40) + 30)/10;
+        [[SCTransfer sharedInstance] performSelector:@selector(invitePeer:) withObject:peer_id afterDelay:r];
+        
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+        });
 
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
-    [[SCTransfer sharedInstance] invitePeer:peer_id];
-    
-    float r = ((arc4random() % 40) + 30)/10;
-    [[SCTransfer sharedInstance] performSelector:@selector(invitePeer:) withObject:peer_id afterDelay:r];
+    }
 
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.tableView reloadData];
-    });
 }
 
+-(BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (indexPath.section == 0) {
+        return NO;
+    }
+    return YES;
+}
 
 #pragma mark SCTransfer Delegate methods
 
