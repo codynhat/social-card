@@ -10,13 +10,16 @@
                 <navigationController definesPresentationContext="YES" id="3S3-hx-veX" customClass="SCNavigationController" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="z6h-xx-XBw">
                         <autoresizingMask key="autoresizingMask"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </textAttributes>
                     </navigationBar>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zkQ-O2-iWE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-188" y="-49"/>
         </scene>
-        <!--Contact Info View Controller - SocialCard-->
+        <!--Contact Info View Controller-->
         <scene sceneID="Oas-TO-vbU">
             <objects>
                 <viewController storyboardIdentifier="contactInfo" id="s6O-04-pPr" customClass="SCContactInfoViewController" sceneMemberID="viewController">
@@ -84,9 +87,9 @@
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="SocialCard" id="pzg-fl-pvq">
+                    <navigationItem key="navigationItem" id="pzg-fl-pvq">
                         <barButtonItem key="rightBarButtonItem" systemItem="save" id="x7r-uG-n7g">
                             <connections>
                                 <action selector="done:" destination="s6O-04-pPr" id="d3j-6c-pgc"/>
@@ -146,9 +149,9 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="SocialCard" id="dED-j9-W8q">
-                        <barButtonItem key="leftBarButtonItem" title="⚙" id="WbZ-ei-BAX">
+                        <barButtonItem key="rightBarButtonItem" title="⚙" id="WbZ-ei-BAX">
                             <connections>
-                                <action selector="settings:" destination="tHd-1P-W9g" id="qzB-3V-opp"/>
+                                <segue destination="s6O-04-pPr" kind="push" id="uhB-ry-BHJ"/>
                             </connections>
                         </barButtonItem>
                         <connections>

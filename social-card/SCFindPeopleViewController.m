@@ -29,6 +29,7 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
+    
     [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
 }
 
@@ -53,17 +54,6 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-
-- (IBAction)settings:(id)sender {
-    
-    SCContactInfoViewController *contact = [self.storyboard instantiateViewControllerWithIdentifier:@"contactInfo"];
-    
-    [self.navigationController setViewControllers:[NSArray arrayWithObjects:contact, self, nil]];
-    
-    [self.navigationController popViewControllerAnimated:YES];
-
 }
 
 

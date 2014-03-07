@@ -29,6 +29,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.navigationItem.hidesBackButton = YES;
 	
     SCTransfer *scTransfer = [SCTransfer sharedInstance];
     
@@ -52,6 +54,7 @@
 - (IBAction)done:(id)sender {
     [statusLabel setText:@""];
     
+
     // Check if all fields are valid
     if (firstNameField.text.length == 0 || lastNameField.text.length == 0 || numberField.text.length == 0) {
         [statusLabel setText:@"Please enter a value in every field"];
@@ -66,9 +69,15 @@
     [[SCTransfer sharedInstance] setContactInfo:contact];
     
     
-    SCFindPeopleViewController *findPeople = [self.storyboard instantiateViewControllerWithIdentifier:@"findPeople"];
-    [self.navigationController pushViewController:findPeople animated:YES];
-    [self.navigationController setViewControllers:[NSArray arrayWithObject:findPeople]];
+    if (self.navigationController.viewControllers.count > 1) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+    else{
+        SCFindPeopleViewController *findPeople = [self.storyboard instantiateViewControllerWithIdentifier:@"findPeople"];
+        [self.navigationController pushViewController:findPeople animated:YES];
+        [self.navigationController setViewControllers:[NSArray arrayWithObject:findPeople]];
+    }
+    
     
 }
 
