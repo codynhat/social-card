@@ -8,7 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SCContactInfoViewController : UIViewController <UITextFieldDelegate>
+@interface SCContactInfoViewController : UIViewController <UITextFieldDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate>
+
+
+@property (weak, nonatomic) IBOutlet UIButton *profButton;
+-(void)showCameraSource:(NSInteger)index;
+- (IBAction)changePic:(id)sender;
 
 - (IBAction)done:(id)sender;
 

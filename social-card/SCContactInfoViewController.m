@@ -9,6 +9,7 @@
 #import "SCContactInfoViewController.h"
 #import "SCTransfer.h"
 #import "SCFindPeopleViewController.h"
+#import "UIColor+SCColor.h"
 
 @interface SCContactInfoViewController ()
 
@@ -31,6 +32,7 @@
     [super viewDidLoad];
     
     self.navigationItem.hidesBackButton = YES;
+    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:@"Play" size:18.0], NSFontAttributeName, [UIColor scTextColor], NSForegroundColorAttributeName, nil] forState:UIControlStateNormal];
 	
     SCTransfer *scTransfer = [SCTransfer sharedInstance];
     
@@ -40,6 +42,11 @@
         [firstNameField setText:[contact objectForKey:@"first_name"]];
         [lastNameField setText:[contact objectForKey:@"last_name"]];
         [numberField setText:[contact objectForKey:@"phone_number"]];
+        
+        UIImage *prof_pic = [UIImage imageWithData:[contact objectForKey:@"prof_pic"]];
+        if (prof_pic) {
+            [_profButton setImage:prof_pic forState:UIControlStateNormal];
+        }
     }
     
     
@@ -49,6 +56,49 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (IBAction)changePic:(id)sender {
+
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera] && [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Clear Photo" otherButtonTitles:@"Take Picture", @"Choose Picture", nil];
+        
+        [actionSheet showInView:self.navigationController.view];
+    }
+    else if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]){
+        [self showCameraSource:1];
+    }
+    else if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]){
+        [self showCameraSource:2];
+    }
+    
+}
+
+-(void)showCameraSource:(NSInteger)index{
+    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+    imagePicker.allowsEditing = YES;
+    imagePicker.delegate = self;
+
+    if (index == 0) {
+        // Clear Photo
+        
+        [_profButton setImage:nil forState:UIControlStateNormal];
+    }
+    if (index == 1) {
+        // Camera
+        [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
+        [self presentViewController:imagePicker animated:YES completion:nil];
+    }
+    else if(index == 2){
+        // Library
+        [imagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+        [self presentViewController:imagePicker animated:YES completion:nil];
+
+    }
+    
+    
+    
+
 }
 
 - (IBAction)done:(id)sender {
@@ -61,9 +111,16 @@
         return;
     }
     
-    NSDictionary *dict = @{@"first_name": firstNameField.text,
-                           @"last_name": lastNameField.text,
-                           @"phone_number": numberField.text};
+    
+    
+    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:@{@"first_name": firstNameField.text,
+                                                                                @"last_name": lastNameField.text,
+                                                                                @"phone_number": numberField.text}];
+    UIImage *image = [_profButton imageForState:UIControlStateNormal];
+    
+    if (image) {
+        [dict setObject:image forKey:@"prof_pic"];
+    }
     
     NSData *contact = [NSKeyedArchiver archivedDataWithRootObject:dict];
     [[SCTransfer sharedInstance] setContactInfo:contact];
@@ -98,4 +155,22 @@
     return NO; // We do not want UITextField to insert line-breaks.
 }
 
+#pragma mark UIActionSheetDelegate methods
+
+-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
+    [self showCameraSource:buttonIndex];
+}
+
+#pragma mark UIImagePickerControllerDelegate methods
+
+-(void) imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    UIImage *image = [info objectForKey:UIImagePickerControllerEditedImage];
+    
+    if (image) {
+        [_profButton setImage:image forState:UIControlStateNormal];
+    }
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 @end

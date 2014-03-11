@@ -110,7 +110,7 @@
 		C3B8D58E18AADCCC00DE4B0A = {
 			isa = PBXGroup;
 			children = (
-				C3ED0FE518C935D00014D420 /* Colors */,
+				C3ED0FE518C935D00014D420 /* Categories */,
 				C3ED0FD818C92C490014D420 /* Play */,
 				C3B8D5A018AADCCC00DE4B0A /* social-card */,
 				C3B8D5BF18AADCCC00DE4B0A /* social-cardTests */,
@@ -203,13 +203,13 @@
 			path = Play;
 			sourceTree = "<group>";
 		};
-		C3ED0FE518C935D00014D420 /* Colors */ = {
+		C3ED0FE518C935D00014D420 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
 				C3ED0FE218C9331D0014D420 /* UIColor+SCColor.h */,
 				C3ED0FE318C9331D0014D420 /* UIColor+SCColor.m */,
 			);
-			name = Colors;
+			name = Categories;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

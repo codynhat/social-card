@@ -43,9 +43,6 @@
     [[SCTransfer sharedInstance] start];
     [SCTransfer sharedInstance].delegate = self;
     
-    UIFont *customFont = [UIFont fontWithName:@"Helvetica" size:24.0];
-    NSDictionary *fontDictionary = @{NSFontAttributeName : customFont};
-    [_settingsButton setTitleTextAttributes:fontDictionary forState:UIControlStateNormal];
     
     [self.tableView setBackgroundColor:[UIColor scContentColor]];
 }
@@ -82,7 +79,6 @@
     
     [cell.activityIndicator stopAnimating];
     
-    cell.name.font = [UIFont fontWithName:@"Play" size:18.0];
     
     NSArray *p;
     if (indexPath.section == 0) {
@@ -109,7 +105,7 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     if (indexPath.section == 1) {
-        MCPeerID *peer_id = [peers objectAtIndex:indexPath.row];
+        MCPeerID *peer_id = [[peers objectAtIndex:indexPath.row] objectForKey:@"peer"];
         
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
         
@@ -149,8 +145,13 @@
 -(void)peer:(MCPeerID *)peerID didChangeState:(MCSessionState)state{
     if (state == 2) {
         // If connected
-        [connectedPeers addObject:peerID];
-        [peers removeObject:peerID];
+        for(NSDictionary *d in peers){
+            if ([d objectForKey:@"peer"] == peerID) {
+                [connectedPeers addObject:d];
+                [peers removeObject:d];
+            }
+        }
+        
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
