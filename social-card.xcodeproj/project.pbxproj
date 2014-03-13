@@ -11,6 +11,7 @@
 		C32960F718BFF80400091254 /* SCNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = C32960F618BFF80400091254 /* SCNavigationController.m */; };
 		C32960FA18BFF97200091254 /* SCContactInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C32960F918BFF97200091254 /* SCContactInfoViewController.m */; };
 		C383E31C18B6C1AE001EECDF /* SCPersonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C383E31B18B6C1AE001EECDF /* SCPersonCell.m */; };
+		C394CFBB18D265FF007E4CC5 /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = C394CFBA18D265FF007E4CC5 /* UIImage+Resize.m */; };
 		C3B8D59B18AADCCC00DE4B0A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3B8D59A18AADCCC00DE4B0A /* Foundation.framework */; };
 		C3B8D59D18AADCCC00DE4B0A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3B8D59C18AADCCC00DE4B0A /* CoreGraphics.framework */; };
 		C3B8D59F18AADCCC00DE4B0A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3B8D59E18AADCCC00DE4B0A /* UIKit.framework */; };
@@ -52,6 +53,8 @@
 		C32960F918BFF97200091254 /* SCContactInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCContactInfoViewController.m; sourceTree = "<group>"; };
 		C383E31A18B6C1AE001EECDF /* SCPersonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCPersonCell.h; sourceTree = "<group>"; };
 		C383E31B18B6C1AE001EECDF /* SCPersonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPersonCell.m; sourceTree = "<group>"; };
+		C394CFB918D265FF007E4CC5 /* UIImage+Resize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Resize.h"; sourceTree = "<group>"; };
+		C394CFBA18D265FF007E4CC5 /* UIImage+Resize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Resize.m"; sourceTree = "<group>"; };
 		C3B8D59718AADCCC00DE4B0A /* social-card.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "social-card.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C3B8D59A18AADCCC00DE4B0A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C3B8D59C18AADCCC00DE4B0A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -206,6 +209,8 @@
 		C3ED0FE518C935D00014D420 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				C394CFB918D265FF007E4CC5 /* UIImage+Resize.h */,
+				C394CFBA18D265FF007E4CC5 /* UIImage+Resize.m */,
 				C3ED0FE218C9331D0014D420 /* UIColor+SCColor.h */,
 				C3ED0FE318C9331D0014D420 /* UIColor+SCColor.m */,
 			);
@@ -371,6 +376,7 @@
 				C32960F718BFF80400091254 /* SCNavigationController.m in Sources */,
 				C3B8D5D218AADE0F00DE4B0A /* SCTransfer.m in Sources */,
 				C3BE13A018B41B5300206924 /* SCFindPeopleViewController.m in Sources */,
+				C394CFBB18D265FF007E4CC5 /* UIImage+Resize.m in Sources */,
 				C3B8D5A718AADCCC00DE4B0A /* main.m in Sources */,
 				C383E31C18B6C1AE001EECDF /* SCPersonCell.m in Sources */,
 				C32960FA18BFF97200091254 /* SCContactInfoViewController.m in Sources */,
@@ -507,7 +513,7 @@
 				GCC_PREFIX_HEADER = "social-card/social-card-Prefix.pch";
 				INFOPLIST_FILE = "social-card/social-card-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "5B1F182D-FD1D-4568-8442-A757D84EC29E";
+				PROVISIONING_PROFILE = "646DDE30-BAB6-4A6D-BDA8-FFC88B251CA4";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -524,7 +530,7 @@
 				GCC_PREFIX_HEADER = "social-card/social-card-Prefix.pch";
 				INFOPLIST_FILE = "social-card/social-card-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "5B1F182D-FD1D-4568-8442-A757D84EC29E";
+				PROVISIONING_PROFILE = "646DDE30-BAB6-4A6D-BDA8-FFC88B251CA4";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

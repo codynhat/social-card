@@ -79,12 +79,16 @@
     
     [cell.activityIndicator stopAnimating];
     
+    cell.profPic.layer.borderWidth = 0.4;
+    cell.profPic.layer.borderColor = [[UIColor scBackgroundColor] CGColor];
+    cell.profPic.layer.cornerRadius = (cell.profPic.frame.size.width/2);
     
     NSArray *p;
     if (indexPath.section == 0) {
         p = connectedPeers;
         
         cell.name.textColor = [UIColor scGreenColor];
+
     }
     else{
         p = peers;
@@ -105,14 +109,14 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     if (indexPath.section == 1) {
-        MCPeerID *peer_id = [[peers objectAtIndex:indexPath.row] objectForKey:@"peer"];
+        MCPeerID *peer_id = [peers objectAtIndex:indexPath.row];
         
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
         
         [[SCTransfer sharedInstance] invitePeer:peer_id];
         
-        float r = ((arc4random() % 40) + 30)/10;
-        [[SCTransfer sharedInstance] performSelector:@selector(invitePeer:) withObject:peer_id afterDelay:r];
+        /*float r = ((arc4random() % 40) + 30)/10;
+        [[SCTransfer sharedInstance] performSelector:@selector(invitePeer:) withObject:peer_id afterDelay:r];*/
         
         
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -146,10 +150,8 @@
     if (state == 2) {
         // If connected
         for(NSDictionary *d in peers){
-            if ([d objectForKey:@"peer"] == peerID) {
-                [connectedPeers addObject:d];
-                [peers removeObject:d];
-            }
+            [connectedPeers addObject:d];
+            [peers removeObject:d];
         }
         
         
@@ -167,7 +169,7 @@
 - (void)didFinishAddingContact:(NSData*)contact{
     NSDictionary *c = [NSKeyedUnarchiver unarchiveObjectWithData:contact];
 
-    
+    //NSLog(@"CONTACT ADDED: %@", c);
     dispatch_async(dispatch_get_main_queue(), ^{
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
         [hud setMode:MBProgressHUDModeText];

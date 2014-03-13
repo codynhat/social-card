@@ -159,7 +159,11 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
         }
     }
     
-    [session sendData:contact toPeers:[NSArray arrayWithObject:peer] withMode:MCSessionSendDataReliable error:nil];
+    NSError *error;
+    [session sendData:contact toPeers:[NSArray arrayWithObject:peer] withMode:MCSessionSendDataReliable error:&error];
+    if (error) {
+        NSLog(@"ERROR sending data: %@", error);
+    }
     
 }
 
@@ -225,7 +229,7 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
 }
 
 -(void)session:(MCSession *)session didReceiveData:(NSData *)data fromPeer:(MCPeerID *)peerID{
-    NSLog(@"Session received data: %@", [NSKeyedUnarchiver unarchiveObjectWithData:data]);
+    //NSLog(@"Session received data: %@", [NSKeyedUnarchiver unarchiveObjectWithData:data]);
     ABAddressBookRef addressBook;
     
     addressBook = ABAddressBookCreateWithOptions(nil, nil);
@@ -271,8 +275,14 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
 
 -(void)advertiser:(MCNearbyServiceAdvertiser *)advertiser didReceiveInvitationFromPeer:(MCPeerID *)peerID withContext:(NSData *)context invitationHandler:(void (^)(BOOL, MCSession *))invitationHandler{
     NSLog(@"Received Invite from: %@", peerID);
+    
     [invites addObject:peerID];
     [inviteBlocks addObject:invitationHandler];
+    
+    if ([sentInvites containsObject:peerID]) {
+        float r = ((arc4random() % 60))/10;
+        [self performSelector:@selector(invitePeer:) withObject:peerID afterDelay:r];
+    }
 
 }
 
