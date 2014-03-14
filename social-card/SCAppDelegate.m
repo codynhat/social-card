@@ -7,7 +7,7 @@
 //
 
 #import "SCAppDelegate.h"
-#import "SCNavigationController.h"
+#import "SCTransfer.h"
 
 @implementation SCAppDelegate
 
@@ -40,7 +40,7 @@
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     
-    
+    [[[SCTransfer sharedInstance] delegate] clearPeers];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application

@@ -28,35 +28,10 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
 -(id)init{
     if (self = [super init]) {
         
-        _contactInfo = [[NSUserDefaults standardUserDefaults] objectForKey:@"contactInfo"];
-        MCPeerID *peer_id;
-        
-        // Create Peer ID
-        if (_contactInfo) {
-            NSDictionary *c = [NSKeyedUnarchiver unarchiveObjectWithData:_contactInfo];
-            NSString *name = [NSString stringWithFormat:@"%@ %@", [c objectForKey:@"first_name"], [c objectForKey:@"last_name"] ];
-            peer_id = [[MCPeerID alloc] initWithDisplayName:name];
-            
-        }
-        else{
-            peer_id = [[MCPeerID alloc] initWithDisplayName:[[UIDevice currentDevice] name]];
-        }
-
-        
-        
         // Create an initial session
         sessions = [NSMutableArray new];
         
-        MCSession *session = [[MCSession alloc] initWithPeer:peer_id];
-        session.delegate = self;
-        [sessions addObject:session];
-        
-        // Setup browser and advertiser
-        _advertiser = [[MCNearbyServiceAdvertiser alloc] initWithPeer:peer_id discoveryInfo:nil serviceType:@"hfw-socialcard"];
-        _browser = [[MCNearbyServiceBrowser alloc] initWithPeer:peer_id serviceType:@"hfw-socialcard"];
-        
-        _advertiser.delegate = self;
-        _browser.delegate = self;
+
         
         // Initialize
         invites = [NSMutableArray new];
@@ -72,6 +47,34 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
 }
 
 -(void)start{
+    _contactInfo = [[NSUserDefaults standardUserDefaults] objectForKey:@"contactInfo"];
+    MCPeerID *peer_id;
+    
+    // Create Peer ID
+    if (_contactInfo) {
+        NSDictionary *c = [NSKeyedUnarchiver unarchiveObjectWithData:_contactInfo];
+        NSString *name = [NSString stringWithFormat:@"%@ %@", [c objectForKey:@"first_name"], [c objectForKey:@"last_name"] ];
+        peer_id = [[MCPeerID alloc] initWithDisplayName:name];
+        
+    }
+    else{
+        peer_id = [[MCPeerID alloc] initWithDisplayName:[[UIDevice currentDevice] name]];
+    }
+    
+    MCSession *session = [[MCSession alloc] initWithPeer:peer_id];
+    session.delegate = self;
+    [sessions addObject:session];
+    
+    
+    
+    // Setup browser and advertiser
+    _advertiser = [[MCNearbyServiceAdvertiser alloc] initWithPeer:peer_id discoveryInfo:nil serviceType:@"hfw-socialcard"];
+    _browser = [[MCNearbyServiceBrowser alloc] initWithPeer:peer_id serviceType:@"hfw-socialcard"];
+    
+    _advertiser.delegate = self;
+    _browser.delegate = self;
+    
+    
     [self startAdvertising];
     [self startBrowsing];
 }
@@ -142,7 +145,7 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
         [array addObjectsFromArray:s.connectedPeers];
     }
     
-    NSLog(@"Connected Peers: %@", array);
+    //NSLog(@"Connected Peers: %@", array);
     
     return [NSArray arrayWithArray:array];
 }

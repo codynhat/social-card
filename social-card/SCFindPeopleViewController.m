@@ -21,11 +21,6 @@
 {
     if(self = [super initWithCoder:aDecoder])
     {
-        peers = [NSMutableArray new];
-        connectedPeers = [NSMutableArray new];
-        
-        [[SCTransfer sharedInstance] start];
-        [SCTransfer sharedInstance].delegate = self;
     }
     return self;
 }
@@ -44,10 +39,13 @@
     // Remove extra lines
     self.tableView.tableFooterView = [[UIView alloc] init];
 
-
-    
-    
     [self.tableView setBackgroundColor:[UIColor scContentColor]];
+    
+    peers = [NSMutableArray new];
+    connectedPeers = [NSMutableArray new];
+    
+    [[SCTransfer sharedInstance] start];
+    [SCTransfer sharedInstance].delegate = self;
 }
 
 - (void)didReceiveMemoryWarning
@@ -98,6 +96,7 @@
     else{
         // Discovered Peers
         p = peers;
+        cell.name.textColor = [UIColor blackColor];
     }
     
     MCPeerID *peer_id = [p objectAtIndex:indexPath.row];
@@ -144,22 +143,29 @@
 #pragma mark SCTransfer Delegate methods
 
 -(void)foundPeer:(MCPeerID *)peer{
-    [peers addObject:peer];
+
+    if ([[[SCTransfer sharedInstance] allConnectedDevices] containsObject:peer]) {
+        [connectedPeers addObject:peer];
+    }
+    else{
+        [peers addObject:peer];
+    }
+    
     [self.tableView reloadData];
 }
 
 -(void)lostPeer:(MCPeerID *)peer{
     [peers removeObject:peer];
+    [connectedPeers removeObject:peer];
+    
     [self.tableView reloadData];
 }
 
 -(void)peer:(MCPeerID *)peerID didChangeState:(MCSessionState)state{
     if (state == 2) {
         // If connected
-        for(NSDictionary *d in peers){
-            [connectedPeers addObject:d];
-            [peers removeObject:d];
-        }
+        [connectedPeers addObject:peerID];
+        [peers removeObject:peerID];
         
         
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -169,6 +175,21 @@
         
         // Send the contact
         [[SCTransfer sharedInstance] sendContact:[[SCTransfer sharedInstance] contactInfo] toPeer:peerID];
+    }
+    else if (state == 0){
+        // Disconnected
+        
+        if ([peers containsObject:peerID]) {
+            [peers removeObject:peerID];
+        }
+        if ([connectedPeers containsObject:peerID]) {
+            [peers removeObject:peerID];
+        }
+        
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+        });
     }
     
 }
@@ -185,6 +206,15 @@
         [hud hide:YES afterDelay:2.0];
     });
     
+}
+
+-(void)clearPeers{
+    peers = [NSMutableArray new];
+    connectedPeers = [NSMutableArray new];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+    });
 }
 
 @end
