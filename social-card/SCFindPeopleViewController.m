@@ -17,11 +17,15 @@
 
 @implementation SCFindPeopleViewController
 
-- (id)initWithStyle:(UITableViewStyle)style
+- (id)initWithCoder:(NSCoder*)aDecoder
 {
-    self = [super initWithStyle:style];
-    if (self) {
+    if(self = [super initWithCoder:aDecoder])
+    {
+        peers = [NSMutableArray new];
+        connectedPeers = [NSMutableArray new];
         
+        [[SCTransfer sharedInstance] start];
+        [SCTransfer sharedInstance].delegate = self;
     }
     return self;
 }
@@ -29,19 +33,18 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
-    
     [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    peers = [NSMutableArray new];
-    connectedPeers = [NSMutableArray new];
     
-    [[SCTransfer sharedInstance] start];
-    [SCTransfer sharedInstance].delegate = self;
+    
+    // Remove extra lines
+    self.tableView.tableFooterView = [[UIView alloc] init];
+
+
     
     
     [self.tableView setBackgroundColor:[UIColor scContentColor]];
@@ -79,18 +82,21 @@
     
     [cell.activityIndicator stopAnimating];
     
+    // Border and radius
     cell.profPic.layer.borderWidth = 0.4;
     cell.profPic.layer.borderColor = [[UIColor scBackgroundColor] CGColor];
     cell.profPic.layer.cornerRadius = (cell.profPic.frame.size.width/2);
     
     NSArray *p;
     if (indexPath.section == 0) {
+        // Connected Peers
         p = connectedPeers;
         
         cell.name.textColor = [UIColor scGreenColor];
 
     }
     else{
+        // Discovered Peers
         p = peers;
     }
     
@@ -133,6 +139,7 @@
     }
     return YES;
 }
+
 
 #pragma mark SCTransfer Delegate methods
 
