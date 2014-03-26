@@ -8,12 +8,16 @@
 
 #import "SCAppDelegate.h"
 #import "SCTransfer.h"
+#import "TestFlight.h"
+#import <Crashlytics/Crashlytics.h>
 
 @implementation SCAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    [TestFlight takeOff:@"aa5c85cd-7647-42a1-b18e-b354bcfc77a6"];
+    [Crashlytics startWithAPIKey:@"5fc44a7ce50e8303b0f41c2e0e28c897fb86f2a0"];
     
     return YES;
 }
