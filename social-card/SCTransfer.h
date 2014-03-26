@@ -49,4 +49,5 @@
 -(void)sendContact:(NSData*)contact toPeer:(MCPeerID*)peer;
 -(void)addContact:(NSData*)contact;
 
+- (NSString *)vCardRepresentation;
 @end

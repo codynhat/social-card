@@ -17,6 +17,7 @@
 		C3AE39F418E350F500E9AC5F /* release_notes.md in Resources */ = {isa = PBXBuildFile; fileRef = C3AE39EE18E350F500E9AC5F /* release_notes.md */; };
 		C3AE39F618E3511D00E9AC5F /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C3AE39F518E3511D00E9AC5F /* libz.dylib */; };
 		C3AE39F918E3522000E9AC5F /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3AE39F818E3522000E9AC5F /* Crashlytics.framework */; };
+		C3AE39FB18E35B4000E9AC5F /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3AE39FA18E35B4000E9AC5F /* MessageUI.framework */; };
 		C3B8D59B18AADCCC00DE4B0A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3B8D59A18AADCCC00DE4B0A /* Foundation.framework */; };
 		C3B8D59D18AADCCC00DE4B0A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3B8D59C18AADCCC00DE4B0A /* CoreGraphics.framework */; };
 		C3B8D59F18AADCCC00DE4B0A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3B8D59E18AADCCC00DE4B0A /* UIKit.framework */; };
@@ -68,6 +69,7 @@
 		C3AE39F118E350F500E9AC5F /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFlight.h; sourceTree = "<group>"; };
 		C3AE39F518E3511D00E9AC5F /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		C3AE39F818E3522000E9AC5F /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
+		C3AE39FA18E35B4000E9AC5F /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		C3B8D59718AADCCC00DE4B0A /* social-card.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "social-card.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C3B8D59A18AADCCC00DE4B0A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C3B8D59C18AADCCC00DE4B0A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -102,6 +104,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C3AE39FB18E35B4000E9AC5F /* MessageUI.framework in Frameworks */,
 				C3AE39F618E3511D00E9AC5F /* libz.dylib in Frameworks */,
 				C3B8D5D418AAE2A300DE4B0A /* CoreBluetooth.framework in Frameworks */,
 				C3AE39F918E3522000E9AC5F /* Crashlytics.framework in Frameworks */,
@@ -165,6 +168,7 @@
 		C3B8D59918AADCCC00DE4B0A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C3AE39FA18E35B4000E9AC5F /* MessageUI.framework */,
 				C3AE39F818E3522000E9AC5F /* Crashlytics.framework */,
 				C3AE39F518E3511D00E9AC5F /* libz.dylib */,
 				C3B8D5D318AAE2A300DE4B0A /* CoreBluetooth.framework */,

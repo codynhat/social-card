@@ -109,7 +109,7 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
     
     if (session == nil) {
         MCPeerID *peer_id = [[MCPeerID alloc] initWithDisplayName:[[UIDevice currentDevice] name]];
-        MCSession *s = [[MCSession alloc] initWithPeer:peer_id];
+        MCSession *s = [[MCSession alloc] initWithPeer:peer_id securityIdentity:nil encryptionPreference:MCEncryptionRequired];
         s.delegate = self;
         [sessions addObject:s];
         session = s;
@@ -220,6 +220,28 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
 -(void)setContactInfo:(NSData *)contactInfo{
     [[NSUserDefaults standardUserDefaults] setObject:contactInfo forKey:@"contactInfo"];
     _contactInfo = contactInfo;
+}
+
+- (NSString *)vCardRepresentation
+{
+    NSDictionary *c = [NSKeyedUnarchiver unarchiveObjectWithData:[[NSUserDefaults standardUserDefaults] objectForKey:@"contactInfo"]];
+    
+    NSMutableArray *mutableArray = [[NSMutableArray alloc] init];
+    
+    [mutableArray addObject:@"BEGIN:VCARD"];
+    [mutableArray addObject:@"VERSION:3.0"];
+    
+    [mutableArray addObject:[NSString stringWithFormat:@"N:%@;%@;;;",[c objectForKey:@"last_name"], [c objectForKey:@"first_name"]]];
+    
+    
+    [mutableArray addObject:[NSString stringWithFormat:@"TEL:%@", [c objectForKey:@"phone_number"]]];
+    
+    
+    [mutableArray addObject:@"END:VCARD"];
+    
+    NSString *string = [mutableArray componentsJoinedByString:@"\n"];
+    
+    return string;
 }
 
 #pragma mark MCSessionDelete methods

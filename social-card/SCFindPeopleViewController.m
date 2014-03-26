@@ -59,7 +59,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -67,8 +67,11 @@
     if (section == 0) {
         return connectedPeers.count;
     }
-    else{
+    else if (section == 1){
         return peers.count;
+    }
+    else{
+        return 1;
     }
     
 }
@@ -78,34 +81,48 @@
     static NSString *CellIdentifier = @"personCell";
     SCPersonCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
+    
     [cell.activityIndicator stopAnimating];
     
-    // Border and radius
-    cell.profPic.layer.borderWidth = 0.4;
-    cell.profPic.layer.borderColor = [[UIColor scBackgroundColor] CGColor];
-    cell.profPic.layer.cornerRadius = (cell.profPic.frame.size.width/2);
-    
-    NSArray *p;
-    if (indexPath.section == 0) {
-        // Connected Peers
-        p = connectedPeers;
+    if (indexPath.section < 2) {
+        // Peer cell
         
-        cell.name.textColor = [UIColor scGreenColor];
-
+        // Border and radius
+        cell.profPic.layer.borderWidth = 0.4;
+        cell.profPic.layer.borderColor = [[UIColor scBackgroundColor] CGColor];
+        cell.profPic.layer.cornerRadius = (cell.profPic.frame.size.width/2);
+        
+        NSArray *p;
+        if (indexPath.section == 0) {
+            // Connected Peers
+            p = connectedPeers;
+            
+            cell.name.textColor = [UIColor scGreenColor];
+            
+        }
+        else{
+            // Discovered Peers
+            p = peers;
+            cell.name.textColor = [UIColor blackColor];
+        }
+        
+        MCPeerID *peer_id = [p objectAtIndex:indexPath.row];
+        
+        cell.name.text = peer_id.displayName;
+        
+        if (p == peers && [[[SCTransfer sharedInstance] sentInvites] containsObject:peer_id]) {
+            [cell.activityIndicator startAnimating];
+        }
     }
     else{
-        // Discovered Peers
-        p = peers;
-        cell.name.textColor = [UIColor blackColor];
+        // Other person cell
+        
+        cell.profPic.image = nil;
+        cell.name.text = @"Add Other Person...";
+        cell.name.font = [UIFont boldSystemFontOfSize:18.0];
+        
     }
     
-    MCPeerID *peer_id = [p objectAtIndex:indexPath.row];
-    
-    cell.name.text = peer_id.displayName;
-    
-    if (p == peers && [[[SCTransfer sharedInstance] sentInvites] containsObject:peer_id]) {
-        [cell.activityIndicator startAnimating];
-    }
     
     
     return cell;
@@ -114,6 +131,8 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     if (indexPath.section == 1) {
+        // Peer selected
+        
         MCPeerID *peer_id = [peers objectAtIndex:indexPath.row];
         
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -128,6 +147,20 @@
             [self.tableView reloadData];
         });
 
+    }
+    else if (indexPath.section == 2) {
+        // Add other person...
+        
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        
+        if ([MFMessageComposeViewController canSendText] && [MFMessageComposeViewController canSendAttachments] && [MFMessageComposeViewController isSupportedAttachmentUTI:@"public.vcard"]) {
+            MFMessageComposeViewController *vc = [[MFMessageComposeViewController alloc] init];
+            vc.messageComposeDelegate = self;
+            
+            [vc addAttachmentData:[[[SCTransfer sharedInstance] vCardRepresentation] dataUsingEncoding:NSUTF8StringEncoding] typeIdentifier:@"public.vcard" filename:@"card.vcf"];
+            
+            [self presentViewController:vc animated:YES completion:nil];
+        }
     }
 
 }
@@ -216,5 +249,12 @@
         [self.tableView reloadData];
     });
 }
+
+#pragma mark MFMessageComposeViewControllerDelegate
+
+-(void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 
 @end

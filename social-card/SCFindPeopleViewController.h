@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "SCTransfer.h"
 #import "MBProgressHUD.h"
+#import <MessageUI/MessageUI.h>
 
-@interface SCFindPeopleViewController : UITableViewController <SCTransferDelegate>{
+@interface SCFindPeopleViewController : UITableViewController <SCTransferDelegate, MFMessageComposeViewControllerDelegate>{
     NSMutableArray *peers;
     NSMutableArray *connectedPeers;
 }
