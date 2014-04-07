@@ -11,11 +11,13 @@
 #import "MBProgressHUD.h"
 #import <MessageUI/MessageUI.h>
 
-@interface SCFindPeopleViewController : UITableViewController <SCTransferDelegate, MFMessageComposeViewControllerDelegate>{
+@interface SCFindPeopleViewController : UITableViewController <SCTransferDelegate, MFMessageComposeViewControllerDelegate, UIAlertViewDelegate>{
     NSMutableArray *peers;
     NSMutableArray *connectedPeers;
+
 }
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *settingsButton;
 
+-(void)showText:(NSData*)contact;
 @end

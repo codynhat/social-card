@@ -54,6 +54,26 @@
     // Dispose of any resources that can be recreated.
 }
 
+-(void)showText:(NSData*)contact{
+    NSDictionary *contactInfo = [NSKeyedUnarchiver unarchiveObjectWithData:contact];
+
+    if ([MFMessageComposeViewController canSendText] && [MFMessageComposeViewController canSendAttachments] && [MFMessageComposeViewController isSupportedAttachmentUTI:@"public.vcard"]) {
+        MFMessageComposeViewController *vc = [[MFMessageComposeViewController alloc] init];
+        vc.messageComposeDelegate = self;
+        vc.recipients = [NSArray arrayWithObject:[contactInfo objectForKey:@"phone_number"]];
+        
+        NSDictionary *myContact = [NSKeyedUnarchiver unarchiveObjectWithData:[[SCTransfer sharedInstance] contactInfo]];
+
+        vc.body = [NSString stringWithFormat:@"Hey %@, this is %@. This was sent using SocialCard, check it out! http://bit.ly/1gEH52F", [contactInfo objectForKey:@"first_name"], [myContact objectForKey:@"first_name"]];
+        
+        
+        [vc addAttachmentData:[[[SCTransfer sharedInstance] vCardRepresentation] dataUsingEncoding:NSUTF8StringEncoding] typeIdentifier:@"public.vcard" filename:[NSString stringWithFormat:@"%@%@.vcf", [myContact objectForKey:@"first_name"], [myContact objectForKey:@"last_name"]]];
+        
+        [self presentViewController:vc animated:YES completion:nil];
+    }
+    
+}
+
 
 #pragma mark - Table view data source
 
@@ -153,14 +173,10 @@
         
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
         
-        if ([MFMessageComposeViewController canSendText] && [MFMessageComposeViewController canSendAttachments] && [MFMessageComposeViewController isSupportedAttachmentUTI:@"public.vcard"]) {
-            MFMessageComposeViewController *vc = [[MFMessageComposeViewController alloc] init];
-            vc.messageComposeDelegate = self;
-            
-            [vc addAttachmentData:[[[SCTransfer sharedInstance] vCardRepresentation] dataUsingEncoding:NSUTF8StringEncoding] typeIdentifier:@"public.vcard" filename:@"card.vcf"];
-            
-            [self presentViewController:vc animated:YES completion:nil];
-        }
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"First Name" message:@"What is the first name of the person you would like to add?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Next", nil];
+        alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+        [alert show];
+        
     }
 
 }
@@ -171,6 +187,8 @@
     }
     return YES;
 }
+
+
 
 
 #pragma mark SCTransfer Delegate methods
@@ -250,7 +268,52 @@
     });
 }
 
+#pragma mark UIAlertViewDelegate Methods
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    static int count = 0;
+    static NSString *first_name = @"";
+    static NSString *last_name = @"";
+    static NSString *phone_number = @"";
+    
+    if (buttonIndex == 1) {
+        
+        
+        if (count == 0) {
+            first_name = [alertView textFieldAtIndex:0].text;
+            
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Last Name" message:@"What is their last name?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Next", nil];
+            alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+            [alert show];
+        }
+        else if (count == 1) {
+            last_name = [alertView textFieldAtIndex:0].text;
+            
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Phone Number" message:@"What is their phone number?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Next", nil];
+            alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+            [alert show];
+        }
+        else{
+            //NSLog(@"NAME: %@ %@", first_name, last_name);
+            phone_number = [alertView textFieldAtIndex:0].text;
+            
+            NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:@{@"first_name": first_name,
+                                                                                        @"last_name": last_name,
+                                                                                        @"phone_number": phone_number}];
+            NSData *contact = [NSKeyedArchiver archivedDataWithRootObject:dict];
+            
+            [[SCTransfer sharedInstance] addContact:contact];
+            
+            [self showText:contact];
+            
+        }
+        count++;
+    }
+}
+
 #pragma mark MFMessageComposeViewControllerDelegate
+
+
 
 -(void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result{
     [self dismissViewControllerAnimated:YES completion:nil];
