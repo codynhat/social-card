@@ -32,12 +32,15 @@
 		<string>HelveticaNeue</string>
 		<string>HelveticaNeue</string>
 		<string>HelveticaNeue</string>
-		<string>HelveticaNeue</string>
+		<string>Play</string>
+		<string>Play</string>
+		<string>Play</string>
+		<string>Play</string>
 		<string>Play</string>
 		<string>Play</string>
 	</array>
 	<key>length</key>
-	<integer>383952</integer>
+	<integer>464420</integer>
 	<key>version</key>
 	<integer>18</integer>
 </dict>
