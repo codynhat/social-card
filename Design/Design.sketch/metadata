@@ -13,12 +13,31 @@
 		<string>HelveticaNeue-Bold</string>
 		<string>HelveticaNeue</string>
 		<string>HelveticaNeue</string>
-		<string>Play-Bold</string>
+		<string>Play</string>
 		<string>HelveticaNeue</string>
 		<string>HelveticaNeue-Medium</string>
+		<string>.LucidaGrandeUI</string>
+		<string>HelveticaNeue</string>
+		<string>Play</string>
+		<string>HelveticaNeue</string>
+		<string>HelveticaNeue-Medium</string>
+		<string>HelveticaNeue</string>
+		<string>HelveticaNeue</string>
+		<string>HelveticaNeue</string>
+		<string>HelveticaNeue</string>
+		<string>HelveticaNeue</string>
+		<string>HelveticaNeue</string>
+		<string>HelveticaNeue</string>
+		<string>HelveticaNeue</string>
+		<string>HelveticaNeue</string>
+		<string>HelveticaNeue</string>
+		<string>HelveticaNeue</string>
+		<string>HelveticaNeue</string>
+		<string>Play</string>
+		<string>Play</string>
 	</array>
 	<key>length</key>
-	<integer>1416024</integer>
+	<integer>383952</integer>
 	<key>version</key>
 	<integer>18</integer>
 </dict>
