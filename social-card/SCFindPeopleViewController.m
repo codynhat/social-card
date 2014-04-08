@@ -157,15 +157,27 @@
         
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
         
-        [[SCTransfer sharedInstance] invitePeer:peer_id];
+        NSArray *people = [[SCTransfer sharedInstance] cacheName:peer_id.displayName];
         
-        /*float r = ((arc4random() % 40) + 30)/10;
-        [[SCTransfer sharedInstance] performSelector:@selector(invitePeer:) withObject:peer_id afterDelay:r];*/
+        if (people.count > 0) {
+            current_peer = peer_id;
+            NSString *message = [NSString stringWithFormat:@"There is already someone with the name %@ in your contacts. Would you still like to add this contact?", peer_id.displayName];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Duplicate Contact" message:message delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+            [alert show];
+        }
+        else{
+            [[SCTransfer sharedInstance] invitePeer:peer_id];
+            
+            /*float r = ((arc4random() % 40) + 30)/10;
+             [[SCTransfer sharedInstance] performSelector:@selector(invitePeer:) withObject:peer_id afterDelay:r];*/
+            
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.tableView reloadData];
+            });
+        }
         
         
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.tableView reloadData];
-        });
 
     }
     else if (indexPath.section == 2) {
@@ -276,7 +288,20 @@
     static NSString *last_name = @"";
     static NSString *phone_number = @"";
     
-    if (buttonIndex == 1) {
+    if ([[alertView buttonTitleAtIndex:buttonIndex] isEqualToString:@"Yes"]) {
+        // Invite person
+        
+        [[SCTransfer sharedInstance] invitePeer:current_peer];
+        
+        /*float r = ((arc4random() % 40) + 30)/10;
+         [[SCTransfer sharedInstance] performSelector:@selector(invitePeer:) withObject:peer_id afterDelay:r];*/
+        
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+        });
+    }
+    else if (buttonIndex == 1) {
         
         
         if (count == 0) {

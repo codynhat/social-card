@@ -20,11 +20,14 @@
 
 @end
 
-@interface SCTransfer : NSObject <MCNearbyServiceAdvertiserDelegate, MCNearbyServiceBrowserDelegate, MCSessionDelegate>{
+@interface SCTransfer : NSObject <MCNearbyServiceAdvertiserDelegate, MCNearbyServiceBrowserDelegate, MCSessionDelegate, UIAlertViewDelegate>{
     NSMutableArray *sessions;
     NSMutableArray *invites;
     NSMutableArray *inviteBlocks;
     NSMutableArray *sentInvites;
+        
+    ABAddressBookRef addressBook;
+    BOOL contactPermissions;
     
 }
 
@@ -40,6 +43,7 @@
 -(void)start;
 -(void)startAdvertising;
 -(void)startBrowsing;
+-(NSArray*)cacheName:(NSString*)name;
 
 -(void)invitePeer:(MCPeerID*)peer;
 -(NSArray*)sentInvites;
@@ -48,6 +52,7 @@
 
 -(void)sendContact:(NSData*)contact toPeer:(MCPeerID*)peer;
 -(void)addContact:(NSData*)contact;
+-(void)showContactPermissions;
 
 - (NSString *)vCardRepresentation;
 @end

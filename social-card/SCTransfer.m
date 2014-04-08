@@ -40,7 +40,33 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
         
         
         
+        
         _contactInfo = [[NSUserDefaults standardUserDefaults] objectForKey:@"contactInfo"];
+
+        addressBook = ABAddressBookCreateWithOptions(nil, nil);
+        
+        if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusNotDetermined) {
+            ABAddressBookRequestAccessWithCompletion(addressBook, ^(bool granted, CFErrorRef error) {
+                if (granted) {
+                   
+                    contactPermissions = YES;
+                    
+                } else {
+                    contactPermissions = NO;
+                    [self showContactPermissions];
+                }
+            });
+        }
+        else if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized) {
+            contactPermissions = YES;
+            
+            
+        }
+        else {
+            contactPermissions = NO;
+            [self showContactPermissions];
+        }
+
 
    
     }
@@ -89,12 +115,32 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
     [_browser startBrowsingForPeers];
 }
 
+-(void)showContactPermissions{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Contact Permissions" message:@"SocialCard needs to access your address book in order to add a contact!\n Go to Settings->Privacy->Contacts to enable permissions for SocialCard." delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+    [alert show];
+}
+
+-(NSArray*)cacheName:(NSString*)name{
+    
+    NSArray *cachedNames = [NSArray new];
+    
+    if (contactPermissions) {
+        cachedNames = (__bridge NSArray*)ABAddressBookCopyPeopleWithName(addressBook, (__bridge CFStringRef)name);
+        
+    }
+
+    
+    return cachedNames;
+}
+
 -(NSArray*)sentInvites{
     return [NSArray arrayWithArray:sentInvites];
 }
 
 -(void)invitePeer:(MCPeerID*)peer{
     // Check to see if an invite already exists, if so accept it, if not send one
+    
+    
     
     
     MCSession *session = nil;
@@ -171,15 +217,18 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
 }
 
 -(void)addContact:(NSData*)contact{
+    
+    if (!contactPermissions) {
+        [self showContactPermissions];
+        return;
+    }
+    
     NSDictionary *c = [NSKeyedUnarchiver unarchiveObjectWithData:contact];
     
     
-    ABAddressBookRef addressBook;
     bool wantToSaveChanges = YES;
     bool didSave;
     CFErrorRef error = NULL;
-    
-    addressBook = ABAddressBookCreateWithOptions(nil, nil);
     
     
     
@@ -255,28 +304,13 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
 
 -(void)session:(MCSession *)session didReceiveData:(NSData *)data fromPeer:(MCPeerID *)peerID{
     //NSLog(@"Session received data: %@", [NSKeyedUnarchiver unarchiveObjectWithData:data]);
-    ABAddressBookRef addressBook;
     
-    addressBook = ABAddressBookCreateWithOptions(nil, nil);
     
-    if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusNotDetermined) {
-        ABAddressBookRequestAccessWithCompletion(addressBook, ^(bool granted, CFErrorRef error) {
-            if (granted) {
-                [self addContact:data];
-
-                
-            } else {
-                
-            }
-        });
-    }
-    else if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized) {
+    if (contactPermissions) {
         [self addContact:data];
-
-        
     }
-    else {
-        
+    else{
+        [self showContactPermissions];
     }
 }
 

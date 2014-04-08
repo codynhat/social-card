@@ -14,6 +14,8 @@
 @interface SCFindPeopleViewController : UITableViewController <SCTransferDelegate, MFMessageComposeViewControllerDelegate, UIAlertViewDelegate>{
     NSMutableArray *peers;
     NSMutableArray *connectedPeers;
+    
+    MCPeerID *current_peer;
 
 }
 
