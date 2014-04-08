@@ -28,35 +28,10 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
 -(id)init{
     if (self = [super init]) {
         
-        _contactInfo = [[NSUserDefaults standardUserDefaults] objectForKey:@"contactInfo"];
-        MCPeerID *peer_id;
-        
-        // Create Peer ID
-        if (_contactInfo) {
-            NSDictionary *c = [NSKeyedUnarchiver unarchiveObjectWithData:_contactInfo];
-            NSString *name = [NSString stringWithFormat:@"%@ %@", [c objectForKey:@"first_name"], [c objectForKey:@"last_name"] ];
-            peer_id = [[MCPeerID alloc] initWithDisplayName:name];
-            
-        }
-        else{
-            peer_id = [[MCPeerID alloc] initWithDisplayName:[[UIDevice currentDevice] name]];
-        }
-
-        
-        
         // Create an initial session
         sessions = [NSMutableArray new];
         
-        MCSession *session = [[MCSession alloc] initWithPeer:peer_id];
-        session.delegate = self;
-        [sessions addObject:session];
-        
-        // Setup browser and advertiser
-        _advertiser = [[MCNearbyServiceAdvertiser alloc] initWithPeer:peer_id discoveryInfo:nil serviceType:@"hfw-socialcard"];
-        _browser = [[MCNearbyServiceBrowser alloc] initWithPeer:peer_id serviceType:@"hfw-socialcard"];
-        
-        _advertiser.delegate = self;
-        _browser.delegate = self;
+
         
         // Initialize
         invites = [NSMutableArray new];
@@ -72,6 +47,34 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
 }
 
 -(void)start{
+    _contactInfo = [[NSUserDefaults standardUserDefaults] objectForKey:@"contactInfo"];
+    MCPeerID *peer_id;
+    
+    // Create Peer ID
+    if (_contactInfo) {
+        NSDictionary *c = [NSKeyedUnarchiver unarchiveObjectWithData:_contactInfo];
+        NSString *name = [NSString stringWithFormat:@"%@ %@", [c objectForKey:@"first_name"], [c objectForKey:@"last_name"] ];
+        peer_id = [[MCPeerID alloc] initWithDisplayName:name];
+        
+    }
+    else{
+        peer_id = [[MCPeerID alloc] initWithDisplayName:[[UIDevice currentDevice] name]];
+    }
+    
+    MCSession *session = [[MCSession alloc] initWithPeer:peer_id];
+    session.delegate = self;
+    [sessions addObject:session];
+    
+    
+    
+    // Setup browser and advertiser
+    _advertiser = [[MCNearbyServiceAdvertiser alloc] initWithPeer:peer_id discoveryInfo:nil serviceType:@"hfw-socialcard"];
+    _browser = [[MCNearbyServiceBrowser alloc] initWithPeer:peer_id serviceType:@"hfw-socialcard"];
+    
+    _advertiser.delegate = self;
+    _browser.delegate = self;
+    
+    
     [self startAdvertising];
     [self startBrowsing];
 }
@@ -142,7 +145,7 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
         [array addObjectsFromArray:s.connectedPeers];
     }
     
-    NSLog(@"Connected Peers: %@", array);
+    //NSLog(@"Connected Peers: %@", array);
     
     return [NSArray arrayWithArray:array];
 }
@@ -159,7 +162,11 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
         }
     }
     
-    [session sendData:contact toPeers:[NSArray arrayWithObject:peer] withMode:MCSessionSendDataReliable error:nil];
+    NSError *error;
+    [session sendData:contact toPeers:[NSArray arrayWithObject:peer] withMode:MCSessionSendDataReliable error:&error];
+    if (error) {
+        NSLog(@"ERROR sending data: %@", error);
+    }
     
 }
 
@@ -225,7 +232,7 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
 }
 
 -(void)session:(MCSession *)session didReceiveData:(NSData *)data fromPeer:(MCPeerID *)peerID{
-    NSLog(@"Session received data: %@", [NSKeyedUnarchiver unarchiveObjectWithData:data]);
+    //NSLog(@"Session received data: %@", [NSKeyedUnarchiver unarchiveObjectWithData:data]);
     ABAddressBookRef addressBook;
     
     addressBook = ABAddressBookCreateWithOptions(nil, nil);
@@ -271,8 +278,14 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
 
 -(void)advertiser:(MCNearbyServiceAdvertiser *)advertiser didReceiveInvitationFromPeer:(MCPeerID *)peerID withContext:(NSData *)context invitationHandler:(void (^)(BOOL, MCSession *))invitationHandler{
     NSLog(@"Received Invite from: %@", peerID);
+    
     [invites addObject:peerID];
     [inviteBlocks addObject:invitationHandler];
+    
+    if ([sentInvites containsObject:peerID]) {
+        float r = ((arc4random() % 60))/10;
+        [self performSelector:@selector(invitePeer:) withObject:peerID afterDelay:r];
+    }
 
 }
 

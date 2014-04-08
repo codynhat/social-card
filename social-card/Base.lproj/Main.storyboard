@@ -32,7 +32,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="First Name:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xwg-Xm-mZC">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="First Name:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xwg-Xm-mZC">
                                 <rect key="frame" x="20" y="184" width="89" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <constraints>
@@ -99,31 +99,12 @@
                                 <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wVm-Pw-PYn">
-                                <rect key="frame" x="123" y="89" width="75" height="75"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.14901961389999999" green="0.84313732389999996" blue="1" alpha="1" colorSpace="deviceRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="75" id="MEu-HA-8WI"/>
-                                    <constraint firstAttribute="width" constant="75" id="xbg-3B-GwN"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                <state key="normal">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="changePic:" destination="s6O-04-pPr" eventType="touchUpInside" id="enP-n2-Ju4"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.80000000000000004" blue="0.78039215689999997" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="CS7-jw-vnS" firstAttribute="leading" secondItem="nA8-E9-a91" secondAttribute="leading" constant="20" id="0js-Nc-Q8p"/>
-                            <constraint firstItem="wVm-Pw-PYn" firstAttribute="top" secondItem="bVF-aS-XSu" secondAttribute="bottom" constant="25" id="1h9-WW-eVU"/>
                             <constraint firstItem="xwg-Xm-mZC" firstAttribute="leading" secondItem="nA8-E9-a91" secondAttribute="leading" constant="20" id="EEx-cY-aTu"/>
-                            <constraint firstItem="xwg-Xm-mZC" firstAttribute="top" secondItem="wVm-Pw-PYn" secondAttribute="bottom" constant="20" id="bpn-uV-CyH"/>
                             <constraint firstItem="X0e-fK-onE" firstAttribute="leading" secondItem="nA8-E9-a91" secondAttribute="leading" constant="20" id="jZM-th-itn"/>
-                            <constraint firstAttribute="centerX" secondItem="wVm-Pw-PYn" secondAttribute="centerX" id="or5-aE-PbJ"/>
                         </constraints>
                     </scrollView>
                     <navigationItem key="navigationItem" title="Your SocialCard" id="pzg-fl-pvq">
@@ -138,7 +119,6 @@
                         <outlet property="firstNameField" destination="xG1-BH-N0j" id="DVL-Jf-Vrl"/>
                         <outlet property="lastNameField" destination="Yc1-Ag-7U4" id="M0o-Oc-0oZ"/>
                         <outlet property="numberField" destination="gBj-Yb-kcm" id="dlx-6S-NQl"/>
-                        <outlet property="profButton" destination="wVm-Pw-PYn" id="0Eb-gF-ifL"/>
                         <outlet property="statusLabel" destination="5FS-Wp-6Aj" id="YPv-vd-ju8"/>
                     </connections>
                 </viewController>
@@ -154,7 +134,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <inset key="separatorInset" minX="50" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        <inset key="separatorInset" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="gray" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="personCell" id="f07-YR-uIV" customClass="SCPersonCell">
                                 <rect key="frame" x="0.0" y="86" width="320" height="44"/>

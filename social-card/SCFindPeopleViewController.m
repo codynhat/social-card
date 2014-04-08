@@ -17,11 +17,10 @@
 
 @implementation SCFindPeopleViewController
 
-- (id)initWithStyle:(UITableViewStyle)style
+- (id)initWithCoder:(NSCoder*)aDecoder
 {
-    self = [super initWithStyle:style];
-    if (self) {
-        
+    if(self = [super initWithCoder:aDecoder])
+    {
     }
     return self;
 }
@@ -29,22 +28,24 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
-    
     [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    
+    // Remove extra lines
+    self.tableView.tableFooterView = [[UIView alloc] init];
 
+    [self.tableView setBackgroundColor:[UIColor scContentColor]];
+    
     peers = [NSMutableArray new];
     connectedPeers = [NSMutableArray new];
     
     [[SCTransfer sharedInstance] start];
     [SCTransfer sharedInstance].delegate = self;
-    
-    
-    [self.tableView setBackgroundColor:[UIColor scContentColor]];
 }
 
 - (void)didReceiveMemoryWarning
@@ -79,15 +80,23 @@
     
     [cell.activityIndicator stopAnimating];
     
+    // Border and radius
+    cell.profPic.layer.borderWidth = 0.4;
+    cell.profPic.layer.borderColor = [[UIColor scBackgroundColor] CGColor];
+    cell.profPic.layer.cornerRadius = (cell.profPic.frame.size.width/2);
     
     NSArray *p;
     if (indexPath.section == 0) {
+        // Connected Peers
         p = connectedPeers;
         
         cell.name.textColor = [UIColor scGreenColor];
+
     }
     else{
+        // Discovered Peers
         p = peers;
+        cell.name.textColor = [UIColor blackColor];
     }
     
     MCPeerID *peer_id = [p objectAtIndex:indexPath.row];
@@ -105,14 +114,14 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     if (indexPath.section == 1) {
-        MCPeerID *peer_id = [[peers objectAtIndex:indexPath.row] objectForKey:@"peer"];
+        MCPeerID *peer_id = [peers objectAtIndex:indexPath.row];
         
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
         
         [[SCTransfer sharedInstance] invitePeer:peer_id];
         
-        float r = ((arc4random() % 40) + 30)/10;
-        [[SCTransfer sharedInstance] performSelector:@selector(invitePeer:) withObject:peer_id afterDelay:r];
+        /*float r = ((arc4random() % 40) + 30)/10;
+        [[SCTransfer sharedInstance] performSelector:@selector(invitePeer:) withObject:peer_id afterDelay:r];*/
         
         
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -130,27 +139,33 @@
     return YES;
 }
 
+
 #pragma mark SCTransfer Delegate methods
 
 -(void)foundPeer:(MCPeerID *)peer{
-    [peers addObject:peer];
+
+    if ([[[SCTransfer sharedInstance] allConnectedDevices] containsObject:peer]) {
+        [connectedPeers addObject:peer];
+    }
+    else{
+        [peers addObject:peer];
+    }
+    
     [self.tableView reloadData];
 }
 
 -(void)lostPeer:(MCPeerID *)peer{
     [peers removeObject:peer];
+    [connectedPeers removeObject:peer];
+    
     [self.tableView reloadData];
 }
 
 -(void)peer:(MCPeerID *)peerID didChangeState:(MCSessionState)state{
     if (state == 2) {
         // If connected
-        for(NSDictionary *d in peers){
-            if ([d objectForKey:@"peer"] == peerID) {
-                [connectedPeers addObject:d];
-                [peers removeObject:d];
-            }
-        }
+        [connectedPeers addObject:peerID];
+        [peers removeObject:peerID];
         
         
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -161,13 +176,28 @@
         // Send the contact
         [[SCTransfer sharedInstance] sendContact:[[SCTransfer sharedInstance] contactInfo] toPeer:peerID];
     }
+    else if (state == 0){
+        // Disconnected
+        
+        if ([peers containsObject:peerID]) {
+            [peers removeObject:peerID];
+        }
+        if ([connectedPeers containsObject:peerID]) {
+            [peers removeObject:peerID];
+        }
+        
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+        });
+    }
     
 }
 
 - (void)didFinishAddingContact:(NSData*)contact{
     NSDictionary *c = [NSKeyedUnarchiver unarchiveObjectWithData:contact];
 
-    
+    //NSLog(@"CONTACT ADDED: %@", c);
     dispatch_async(dispatch_get_main_queue(), ^{
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
         [hud setMode:MBProgressHUDModeText];
@@ -176,6 +206,15 @@
         [hud hide:YES afterDelay:2.0];
     });
     
+}
+
+-(void)clearPeers{
+    peers = [NSMutableArray new];
+    connectedPeers = [NSMutableArray new];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+    });
 }
 
 @end

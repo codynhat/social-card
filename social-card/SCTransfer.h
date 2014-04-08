@@ -16,6 +16,7 @@
 - (void)lostPeer:(MCPeerID*)peer;
 - (void)peer:(MCPeerID *)peerID didChangeState:(MCSessionState)state;
 - (void)didFinishAddingContact:(NSData*)contact;
+- (void)clearPeers;
 
 @end
 

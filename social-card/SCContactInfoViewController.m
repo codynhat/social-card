@@ -10,6 +10,7 @@
 #import "SCTransfer.h"
 #import "SCFindPeopleViewController.h"
 #import "UIColor+SCColor.h"
+#import "UIImage+Resize.h"
 
 @interface SCContactInfoViewController ()
 
@@ -116,11 +117,11 @@
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:@{@"first_name": firstNameField.text,
                                                                                 @"last_name": lastNameField.text,
                                                                                 @"phone_number": numberField.text}];
-    UIImage *image = [_profButton imageForState:UIControlStateNormal];
+    //NSData *image = UIImageJPEGRepresentation([[_profButton imageForState:UIControlStateNormal] resizedImageToSize:CGSizeMake(60, 60)], 0.5);
     
-    if (image) {
+    /*if (image) {
         [dict setObject:image forKey:@"prof_pic"];
-    }
+    }*/
     
     NSData *contact = [NSKeyedArchiver archivedDataWithRootObject:dict];
     [[SCTransfer sharedInstance] setContactInfo:contact];
@@ -173,4 +174,5 @@
     
     [self dismissViewControllerAnimated:YES completion:nil];
 }
+
 @end

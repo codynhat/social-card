@@ -7,13 +7,18 @@
 //
 
 #import "SCAppDelegate.h"
-#import "SCNavigationController.h"
+#import "SCTransfer.h"
+#import "TestFlight.h"
+#import <Crashlytics/Crashlytics.h>
 
 @implementation SCAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    [TestFlight takeOff:@"aa5c85cd-7647-42a1-b18e-b354bcfc77a6"];
+    [Crashlytics startWithAPIKey:@"5fc44a7ce50e8303b0f41c2e0e28c897fb86f2a0"];
+    
     return YES;
 }
 							
@@ -32,14 +37,14 @@
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-    SCNavigationController *nav = (SCNavigationController *)[self.window rootViewController];
-    [nav checkForContactInfo];
     
+    [[[SCTransfer sharedInstance] delegate] clearPeers];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
