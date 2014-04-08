@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <MultipeerConnectivity/MultipeerConnectivity.h>
 #import <AddressBook/AddressBook.h>
+#import <CoreBluetooth/CoreBluetooth.h>
 
 @protocol SCTransferDelegate
 
@@ -36,6 +37,7 @@
 @property (strong, nonatomic) MCNearbyServiceBrowser *browser;
 @property (strong, nonatomic) MCNearbyServiceAdvertiser *advertiser;
 @property (strong, nonatomic) NSData *contactInfo;
+@property (strong, nonatomic) CBCentralManager *CM;
 
 
 +(SCTransfer*)sharedInstance;

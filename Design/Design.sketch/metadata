@@ -16,9 +16,10 @@
 		<string>Play-Bold</string>
 		<string>HelveticaNeue</string>
 		<string>HelveticaNeue-Medium</string>
+		<string>Futura-Medium</string>
 	</array>
 	<key>length</key>
-	<integer>1416024</integer>
+	<integer>1417308</integer>
 	<key>version</key>
 	<integer>18</integer>
 </dict>

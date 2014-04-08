@@ -7,6 +7,7 @@
 //
 
 #import "SCTransfer.h"
+#import <CoreBluetooth/CoreBluetooth.h>
 
 @implementation SCTransfer
 
@@ -66,6 +67,8 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
             contactPermissions = NO;
             [self showContactPermissions];
         }
+        
+        
 
 
    
@@ -74,7 +77,7 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
 }
 
 -(void)start{
-        MCPeerID *peer_id;
+    MCPeerID *peer_id;
     
     // Create Peer ID
     if (_contactInfo) {
@@ -348,6 +351,8 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
 -(void)advertiser:(MCNearbyServiceAdvertiser *)advertiser didNotStartAdvertisingPeer:(NSError *)error{
      NSLog(@"Advertiser did not start advertising: %@", error);
 }
+
+
 
 
 @end

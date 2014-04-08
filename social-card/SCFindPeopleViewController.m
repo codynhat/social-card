@@ -46,6 +46,10 @@
     
     [[SCTransfer sharedInstance] start];
     [SCTransfer sharedInstance].delegate = self;
+
+    UIImageView *background = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TableBackground"]];
+    background.contentMode = UIViewContentModeBottom;
+    self.tableView.backgroundView = background;
 }
 
 - (void)didReceiveMemoryWarning
