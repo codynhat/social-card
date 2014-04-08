@@ -110,6 +110,8 @@
     
     if (indexPath.section < 2) {
         // Peer cell
+        cell.profPic.image = [UIImage imageNamed:@"ProfilePic"];
+        cell.name.font = [UIFont systemFontOfSize:18.0];
         
         // Border and radius
         cell.profPic.layer.borderWidth = 0.4;
