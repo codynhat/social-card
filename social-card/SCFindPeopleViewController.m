@@ -143,9 +143,11 @@
     else{
         // Other person cell
         
+        cell.profPic.layer.borderWidth = 0.0;
         cell.profPic.image = nil;
         cell.name.text = @"Add Other Person...";
         cell.name.font = [UIFont boldSystemFontOfSize:18.0];
+        cell.name.textColor = [UIColor blackColor];
         
     }
     
