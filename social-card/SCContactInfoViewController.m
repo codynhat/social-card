@@ -45,7 +45,8 @@
     
     if ([scTransfer contactInfo]) {
         NSDictionary *contact = [NSKeyedUnarchiver unarchiveObjectWithData:[scTransfer contactInfo]];
-        
+        [self.navigationItem.rightBarButtonItem setTitle:@"Save"];
+
         [firstNameField setText:[contact objectForKey:@"first_name"]];
         [lastNameField setText:[contact objectForKey:@"last_name"]];
         [numberField setText:[contact objectForKey:@"phone_number"]];
