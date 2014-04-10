@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <MultipeerConnectivity/MultipeerConnectivity.h>
 #import <AddressBook/AddressBook.h>
+#import <CoreBluetooth/CoreBluetooth.h>
 
 @protocol SCTransferDelegate
 
@@ -20,11 +21,14 @@
 
 @end
 
-@interface SCTransfer : NSObject <MCNearbyServiceAdvertiserDelegate, MCNearbyServiceBrowserDelegate, MCSessionDelegate>{
+@interface SCTransfer : NSObject <MCNearbyServiceAdvertiserDelegate, MCNearbyServiceBrowserDelegate, MCSessionDelegate, UIAlertViewDelegate>{
     NSMutableArray *sessions;
     NSMutableArray *invites;
     NSMutableArray *inviteBlocks;
     NSMutableArray *sentInvites;
+        
+    ABAddressBookRef addressBook;
+    BOOL contactPermissions;
     
 }
 
@@ -33,6 +37,7 @@
 @property (strong, nonatomic) MCNearbyServiceBrowser *browser;
 @property (strong, nonatomic) MCNearbyServiceAdvertiser *advertiser;
 @property (strong, nonatomic) NSData *contactInfo;
+@property (strong, nonatomic) CBCentralManager *CM;
 
 
 +(SCTransfer*)sharedInstance;
@@ -40,6 +45,7 @@
 -(void)start;
 -(void)startAdvertising;
 -(void)startBrowsing;
+-(NSArray*)cacheName:(NSString*)name;
 
 -(void)invitePeer:(MCPeerID*)peer;
 -(NSArray*)sentInvites;
@@ -48,5 +54,7 @@
 
 -(void)sendContact:(NSData*)contact toPeer:(MCPeerID*)peer;
 -(void)addContact:(NSData*)contact;
+-(void)showContactPermissions;
 
+- (NSString *)vCardRepresentation;
 @end

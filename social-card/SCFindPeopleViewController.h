@@ -9,12 +9,17 @@
 #import <UIKit/UIKit.h>
 #import "SCTransfer.h"
 #import "MBProgressHUD.h"
+#import <MessageUI/MessageUI.h>
 
-@interface SCFindPeopleViewController : UITableViewController <SCTransferDelegate>{
+@interface SCFindPeopleViewController : UITableViewController <SCTransferDelegate, MFMessageComposeViewControllerDelegate, UIAlertViewDelegate>{
     NSMutableArray *peers;
     NSMutableArray *connectedPeers;
+    
+    MCPeerID *current_peer;
+
 }
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *settingsButton;
 
+-(void)showText:(NSData*)contact;
 @end

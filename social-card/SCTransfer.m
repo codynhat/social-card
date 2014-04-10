@@ -7,6 +7,7 @@
 //
 
 #import "SCTransfer.h"
+#import <CoreBluetooth/CoreBluetooth.h>
 
 @implementation SCTransfer
 
@@ -40,6 +41,35 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
         
         
         
+        
+        _contactInfo = [[NSUserDefaults standardUserDefaults] objectForKey:@"contactInfo"];
+
+        addressBook = ABAddressBookCreateWithOptions(nil, nil);
+        
+        if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusNotDetermined) {
+            ABAddressBookRequestAccessWithCompletion(addressBook, ^(bool granted, CFErrorRef error) {
+                if (granted) {
+                   
+                    contactPermissions = YES;
+                    
+                } else {
+                    contactPermissions = NO;
+                    [self showContactPermissions];
+                }
+            });
+        }
+        else if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized) {
+            contactPermissions = YES;
+            
+            
+        }
+        else {
+            contactPermissions = NO;
+            [self showContactPermissions];
+        }
+        
+        
+
 
    
     }
@@ -47,7 +77,6 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
 }
 
 -(void)start{
-    _contactInfo = [[NSUserDefaults standardUserDefaults] objectForKey:@"contactInfo"];
     MCPeerID *peer_id;
     
     // Create Peer ID
@@ -89,12 +118,32 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
     [_browser startBrowsingForPeers];
 }
 
+-(void)showContactPermissions{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Contact Permissions" message:@"SocialCard needs to access your address book in order to add a contact!\n Go to Settings->Privacy->Contacts to enable permissions for SocialCard." delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+    [alert show];
+}
+
+-(NSArray*)cacheName:(NSString*)name{
+    
+    NSArray *cachedNames = [NSArray new];
+    
+    if (contactPermissions) {
+        cachedNames = (__bridge NSArray*)ABAddressBookCopyPeopleWithName(addressBook, (__bridge CFStringRef)name);
+        
+    }
+
+    
+    return cachedNames;
+}
+
 -(NSArray*)sentInvites{
     return [NSArray arrayWithArray:sentInvites];
 }
 
 -(void)invitePeer:(MCPeerID*)peer{
     // Check to see if an invite already exists, if so accept it, if not send one
+    
+    
     
     
     MCSession *session = nil;
@@ -109,7 +158,7 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
     
     if (session == nil) {
         MCPeerID *peer_id = [[MCPeerID alloc] initWithDisplayName:[[UIDevice currentDevice] name]];
-        MCSession *s = [[MCSession alloc] initWithPeer:peer_id];
+        MCSession *s = [[MCSession alloc] initWithPeer:peer_id securityIdentity:nil encryptionPreference:MCEncryptionRequired];
         s.delegate = self;
         [sessions addObject:s];
         session = s;
@@ -171,15 +220,18 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
 }
 
 -(void)addContact:(NSData*)contact{
+    
+    if (!contactPermissions) {
+        [self showContactPermissions];
+        return;
+    }
+    
     NSDictionary *c = [NSKeyedUnarchiver unarchiveObjectWithData:contact];
     
     
-    ABAddressBookRef addressBook;
     bool wantToSaveChanges = YES;
     bool didSave;
     CFErrorRef error = NULL;
-    
-    addressBook = ABAddressBookCreateWithOptions(nil, nil);
     
     
     
@@ -222,6 +274,28 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
     _contactInfo = contactInfo;
 }
 
+- (NSString *)vCardRepresentation
+{
+    NSDictionary *c = [NSKeyedUnarchiver unarchiveObjectWithData:[[NSUserDefaults standardUserDefaults] objectForKey:@"contactInfo"]];
+    
+    NSMutableArray *mutableArray = [[NSMutableArray alloc] init];
+    
+    [mutableArray addObject:@"BEGIN:VCARD"];
+    [mutableArray addObject:@"VERSION:3.0"];
+    
+    [mutableArray addObject:[NSString stringWithFormat:@"N:%@;%@;;;",[c objectForKey:@"last_name"], [c objectForKey:@"first_name"]]];
+    
+    
+    [mutableArray addObject:[NSString stringWithFormat:@"TEL:%@", [c objectForKey:@"phone_number"]]];
+    
+    
+    [mutableArray addObject:@"END:VCARD"];
+    
+    NSString *string = [mutableArray componentsJoinedByString:@"\n"];
+    
+    return string;
+}
+
 #pragma mark MCSessionDelete methods
 
 -(void)session:(MCSession *)session peer:(MCPeerID *)peerID didChangeState:(MCSessionState)state{
@@ -233,28 +307,13 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
 
 -(void)session:(MCSession *)session didReceiveData:(NSData *)data fromPeer:(MCPeerID *)peerID{
     //NSLog(@"Session received data: %@", [NSKeyedUnarchiver unarchiveObjectWithData:data]);
-    ABAddressBookRef addressBook;
     
-    addressBook = ABAddressBookCreateWithOptions(nil, nil);
     
-    if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusNotDetermined) {
-        ABAddressBookRequestAccessWithCompletion(addressBook, ^(bool granted, CFErrorRef error) {
-            if (granted) {
-                [self addContact:data];
-
-                
-            } else {
-                
-            }
-        });
-    }
-    else if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized) {
+    if (contactPermissions) {
         [self addContact:data];
-
-        
     }
-    else {
-        
+    else{
+        [self showContactPermissions];
     }
 }
 
@@ -292,6 +351,8 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
 -(void)advertiser:(MCNearbyServiceAdvertiser *)advertiser didNotStartAdvertisingPeer:(NSError *)error{
      NSLog(@"Advertiser did not start advertising: %@", error);
 }
+
+
 
 
 @end
