@@ -12,9 +12,6 @@
 		C32960FA18BFF97200091254 /* SCContactInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C32960F918BFF97200091254 /* SCContactInfoViewController.m */; };
 		C383E31C18B6C1AE001EECDF /* SCPersonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C383E31B18B6C1AE001EECDF /* SCPersonCell.m */; };
 		C394CFBB18D265FF007E4CC5 /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = C394CFBA18D265FF007E4CC5 /* UIImage+Resize.m */; };
-		C3AE39F218E350F500E9AC5F /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C3AE39EC18E350F500E9AC5F /* libTestFlight.a */; };
-		C3AE39F318E350F500E9AC5F /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = C3AE39ED18E350F500E9AC5F /* README.md */; };
-		C3AE39F418E350F500E9AC5F /* release_notes.md in Resources */ = {isa = PBXBuildFile; fileRef = C3AE39EE18E350F500E9AC5F /* release_notes.md */; };
 		C3AE39F618E3511D00E9AC5F /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C3AE39F518E3511D00E9AC5F /* libz.dylib */; };
 		C3AE39F918E3522000E9AC5F /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3AE39F818E3522000E9AC5F /* Crashlytics.framework */; };
 		C3AE39FB18E35B4000E9AC5F /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3AE39FA18E35B4000E9AC5F /* MessageUI.framework */; };
@@ -61,12 +58,6 @@
 		C383E31B18B6C1AE001EECDF /* SCPersonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPersonCell.m; sourceTree = "<group>"; };
 		C394CFB918D265FF007E4CC5 /* UIImage+Resize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Resize.h"; sourceTree = "<group>"; };
 		C394CFBA18D265FF007E4CC5 /* UIImage+Resize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Resize.m"; sourceTree = "<group>"; };
-		C3AE39EC18E350F500E9AC5F /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTestFlight.a; sourceTree = "<group>"; };
-		C3AE39ED18E350F500E9AC5F /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
-		C3AE39EE18E350F500E9AC5F /* release_notes.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = release_notes.md; sourceTree = "<group>"; };
-		C3AE39EF18E350F500E9AC5F /* TestFlight+AsyncLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TestFlight+AsyncLogging.h"; sourceTree = "<group>"; };
-		C3AE39F018E350F500E9AC5F /* TestFlight+ManualSessions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TestFlight+ManualSessions.h"; sourceTree = "<group>"; };
-		C3AE39F118E350F500E9AC5F /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFlight.h; sourceTree = "<group>"; };
 		C3AE39F518E3511D00E9AC5F /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		C3AE39F818E3522000E9AC5F /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		C3AE39FA18E35B4000E9AC5F /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
@@ -110,7 +101,6 @@
 				C3AE39F918E3522000E9AC5F /* Crashlytics.framework in Frameworks */,
 				C3B8D59D18AADCCC00DE4B0A /* CoreGraphics.framework in Frameworks */,
 				C3B8D59F18AADCCC00DE4B0A /* UIKit.framework in Frameworks */,
-				C3AE39F218E350F500E9AC5F /* libTestFlight.a in Frameworks */,
 				C3B8D59B18AADCCC00DE4B0A /* Foundation.framework in Frameworks */,
 				10363847498A49A1832F8413 /* libPods.a in Frameworks */,
 			);
@@ -129,23 +119,9 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		C3AE39EB18E350F500E9AC5F /* TestFlightSDK3.0.0 */ = {
-			isa = PBXGroup;
-			children = (
-				C3AE39EC18E350F500E9AC5F /* libTestFlight.a */,
-				C3AE39ED18E350F500E9AC5F /* README.md */,
-				C3AE39EE18E350F500E9AC5F /* release_notes.md */,
-				C3AE39EF18E350F500E9AC5F /* TestFlight+AsyncLogging.h */,
-				C3AE39F018E350F500E9AC5F /* TestFlight+ManualSessions.h */,
-				C3AE39F118E350F500E9AC5F /* TestFlight.h */,
-			);
-			path = TestFlightSDK3.0.0;
-			sourceTree = "<group>";
-		};
 		C3B8D58E18AADCCC00DE4B0A = {
 			isa = PBXGroup;
 			children = (
-				C3AE39EB18E350F500E9AC5F /* TestFlightSDK3.0.0 */,
 				C3ED0FE518C935D00014D420 /* Categories */,
 				C3ED0FD818C92C490014D420 /* Play */,
 				C3B8D5A018AADCCC00DE4B0A /* social-card */,
@@ -337,11 +313,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C3AE39F418E350F500E9AC5F /* release_notes.md in Resources */,
 				C3B8D5B318AADCCC00DE4B0A /* Images.xcassets in Resources */,
 				C3ED0FDE18C92C490014D420 /* Play-Regular.ttf in Resources */,
 				C3ED0FDD18C92C490014D420 /* Play-Bold.ttf in Resources */,
-				C3AE39F318E350F500E9AC5F /* README.md in Resources */,
 				C3B8D5A518AADCCC00DE4B0A /* InfoPlist.strings in Resources */,
 				C3ED0FDC18C92C490014D420 /* OFL.txt in Resources */,
 				C3B8D5AE18AADCCC00DE4B0A /* Main.storyboard in Resources */,

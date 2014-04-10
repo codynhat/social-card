@@ -7,7 +7,7 @@
 //
 
 #import "SCTransfer.h"
-#import <CoreBluetooth/CoreBluetooth.h>
+#import "KeenClient.h"
 
 @implementation SCTransfer
 
@@ -51,16 +51,23 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
                 if (granted) {
                    
                     contactPermissions = YES;
+                    [[KeenClient sharedClient] addEvent:@{@"granted": [NSNumber numberWithBool:YES]} toEventCollection:@"contact_authorization" error:nil];
+
                     
                 } else {
                     contactPermissions = NO;
+                    [[KeenClient sharedClient] addEvent:@{@"granted": [NSNumber numberWithBool:NO]} toEventCollection:@"contact_authorization" error:nil];
+
                     [self showContactPermissions];
+                    
                 }
             });
         }
         else if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusAuthorized) {
-            contactPermissions = YES;
             
+            contactPermissions = YES;
+            [[KeenClient sharedClient] addEvent:@{@"granted": [NSNumber numberWithBool:YES]} toEventCollection:@"contact_authorization" error:nil];
+
             
         }
         else {
@@ -143,7 +150,7 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
 -(void)invitePeer:(MCPeerID*)peer{
     // Check to see if an invite already exists, if so accept it, if not send one
     
-    
+
     
     
     MCSession *session = nil;
@@ -166,6 +173,9 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
     
     if ([invites containsObject:peer]) {
         NSLog(@"Accepting Invite...");
+        
+        [[KeenClient sharedClient] addEvent:@{@"type": @"accept"} toEventCollection:@"invite_peer" error:nil];
+
 
         // Invite was already received, accept it
         NSUInteger index = [invites indexOfObject:peer];
@@ -179,6 +189,8 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
     else{
         // No invite yet, send one
         NSLog(@"Sending Invite...");
+        [[KeenClient sharedClient] addEvent:@{@"type": @"invite"} toEventCollection:@"invite_peer" error:nil];
+
         [_browser invitePeer:peer toSession:session withContext:nil timeout:30];
         [sentInvites addObject:peer];
         
@@ -299,7 +311,7 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
 #pragma mark MCSessionDelete methods
 
 -(void)session:(MCSession *)session peer:(MCPeerID *)peerID didChangeState:(MCSessionState)state{
-    NSLog(@"Session peer: %@ \n changed state:%d", peerID, state);
+    //NSLog(@"Session peer: %@ \n changed state:%d", peerID, state);
     [sentInvites removeObject:peerID];
     [_delegate peer:peerID didChangeState:state];
     
@@ -348,9 +360,6 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
 
 }
 
--(void)advertiser:(MCNearbyServiceAdvertiser *)advertiser didNotStartAdvertisingPeer:(NSError *)error{
-     NSLog(@"Advertiser did not start advertising: %@", error);
-}
 
 
 
