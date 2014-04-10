@@ -17,6 +17,8 @@
 {
     // Override point for customization after application launch.
     [Crashlytics startWithAPIKey:@"5fc44a7ce50e8303b0f41c2e0e28c897fb86f2a0"];
+    
+    [KeenClient disableGeoLocation];
     [KeenClient sharedClientWithProjectId:@"5347044373f4bb3191000002"
                               andWriteKey:@"536ae2e09ae411cc4c68290832bcc6b647ff48328c7a76010126b7365840518c0418ff88c671aca582bae786ade9f93cd1d052f02593d6ed5bc5b1647a1926d8b1a90dc4454c9806a60d3cba5872727d6754005204d1cff73d1718a83522b18d77e6d0c9b5acfce48fab32ab72931b7e"
                                andReadKey:@""];
@@ -49,15 +51,15 @@
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
-    // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    //NSLog(@"FOREGROUND");
+    [[[SCTransfer sharedInstance] delegate] clearPeers];
 
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    //NSLog(@"ACTIVE");
     
-    [[[SCTransfer sharedInstance] delegate] clearPeers];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
