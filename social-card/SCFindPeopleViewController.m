@@ -125,18 +125,20 @@
         cell.profPic.layer.borderColor = [[UIColor scBackgroundColor] CGColor];
         cell.profPic.layer.cornerRadius = (cell.profPic.frame.size.width/2);
         
+        [cell.check setImage:nil];
+        
         NSArray *p;
         if (indexPath.section == 0) {
             // Connected Peers
             p = connectedPeers;
             
-            cell.name.textColor = [UIColor scGreenColor];
+            [cell.check setImage:[UIImage imageNamed:@"Checkmark"]];
+            
             
         }
         else{
             // Discovered Peers
             p = peers;
-            cell.name.textColor = [UIColor blackColor];
         }
         
         MCPeerID *peer_id = [p objectAtIndex:indexPath.row];
