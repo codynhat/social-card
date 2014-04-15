@@ -29,6 +29,7 @@
         
     ABAddressBookRef addressBook;
     BOOL contactPermissions;
+    MCPeerID *peer_id;
     
 }
 
@@ -43,6 +44,7 @@
 +(SCTransfer*)sharedInstance;
 
 -(void)start;
+-(void)stop;
 -(void)startAdvertising;
 -(void)startBrowsing;
 -(NSArray*)cacheName:(NSString*)name;

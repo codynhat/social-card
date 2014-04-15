@@ -174,7 +174,7 @@
         
         NSArray *people = [[SCTransfer sharedInstance] cacheName:peer_id.displayName];
         
-        if (people.count > 0) {
+        if (NO) {
             current_peer = peer_id;
             NSString *message = [NSString stringWithFormat:@"There is already someone with the name %@ in your contacts. Would you still like to add this contact?", peer_id.displayName];
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Duplicate Contact" message:message delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];

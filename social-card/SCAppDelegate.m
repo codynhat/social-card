@@ -47,6 +47,8 @@
     [[KeenClient sharedClient] uploadWithFinishedBlock:^(void) {
         [application endBackgroundTask:taskId];
     }];
+    
+    
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
@@ -64,7 +66,7 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
-    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    [[SCTransfer sharedInstance] stop];
 }
 
 @end
