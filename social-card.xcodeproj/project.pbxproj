@@ -12,6 +12,7 @@
 		C32960FA18BFF97200091254 /* SCContactInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C32960F918BFF97200091254 /* SCContactInfoViewController.m */; };
 		C383E31C18B6C1AE001EECDF /* SCPersonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C383E31B18B6C1AE001EECDF /* SCPersonCell.m */; };
 		C394CFBB18D265FF007E4CC5 /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = C394CFBA18D265FF007E4CC5 /* UIImage+Resize.m */; };
+		C3A82F5518FDE1F700001A2F /* SCInvite.m in Sources */ = {isa = PBXBuildFile; fileRef = C3A82F5418FDE1F700001A2F /* SCInvite.m */; };
 		C3AE39F618E3511D00E9AC5F /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C3AE39F518E3511D00E9AC5F /* libz.dylib */; };
 		C3AE39F918E3522000E9AC5F /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3AE39F818E3522000E9AC5F /* Crashlytics.framework */; };
 		C3AE39FB18E35B4000E9AC5F /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3AE39FA18E35B4000E9AC5F /* MessageUI.framework */; };
@@ -58,6 +59,8 @@
 		C383E31B18B6C1AE001EECDF /* SCPersonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCPersonCell.m; sourceTree = "<group>"; };
 		C394CFB918D265FF007E4CC5 /* UIImage+Resize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Resize.h"; sourceTree = "<group>"; };
 		C394CFBA18D265FF007E4CC5 /* UIImage+Resize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Resize.m"; sourceTree = "<group>"; };
+		C3A82F5318FDE1F700001A2F /* SCInvite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCInvite.h; sourceTree = "<group>"; };
+		C3A82F5418FDE1F700001A2F /* SCInvite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCInvite.m; sourceTree = "<group>"; };
 		C3AE39F518E3511D00E9AC5F /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		C3AE39F818E3522000E9AC5F /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		C3AE39FA18E35B4000E9AC5F /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
@@ -173,6 +176,8 @@
 				C383E31B18B6C1AE001EECDF /* SCPersonCell.m */,
 				C32960F518BFF80400091254 /* SCNavigationController.h */,
 				C32960F618BFF80400091254 /* SCNavigationController.m */,
+				C3A82F5318FDE1F700001A2F /* SCInvite.h */,
+				C3A82F5418FDE1F700001A2F /* SCInvite.m */,
 				C3B8D5B218AADCCC00DE4B0A /* Images.xcassets */,
 				C3B8D5A118AADCCC00DE4B0A /* Supporting Files */,
 			);
@@ -403,6 +408,7 @@
 				C3B8D5D218AADE0F00DE4B0A /* SCTransfer.m in Sources */,
 				C3BE13A018B41B5300206924 /* SCFindPeopleViewController.m in Sources */,
 				C394CFBB18D265FF007E4CC5 /* UIImage+Resize.m in Sources */,
+				C3A82F5518FDE1F700001A2F /* SCInvite.m in Sources */,
 				C3B8D5A718AADCCC00DE4B0A /* main.m in Sources */,
 				C383E31C18B6C1AE001EECDF /* SCPersonCell.m in Sources */,
 				C32960FA18BFF97200091254 /* SCContactInfoViewController.m in Sources */,

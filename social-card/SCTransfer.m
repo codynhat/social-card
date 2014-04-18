@@ -8,6 +8,7 @@
 
 #import "SCTransfer.h"
 #import "KeenClient.h"
+#import "SCInvite.h"
 
 @implementation SCTransfer
 
@@ -36,9 +37,9 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
         
         // Initialize
         invites = [NSMutableArray new];
-        inviteBlocks = [NSMutableArray new];
         sentInvites = [NSMutableArray new];
-        
+        discovered_peers = [NSMutableArray new];
+
         
         
         
@@ -96,14 +97,13 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
         peer_id = [[MCPeerID alloc] initWithDisplayName:[[UIDevice currentDevice] name]];
     }
     
-    /*MCSession *session = [[MCSession alloc] initWithPeer:peer_id];
-    session.delegate = self;
-    [sessions addObject:session];*/
     
     
     
     // Setup browser and advertiser
-    _advertiser = [[MCNearbyServiceAdvertiser alloc] initWithPeer:peer_id discoveryInfo:nil serviceType:@"hfw-socialcard"];
+    NSDictionary *disc = [NSDictionary dictionaryWithObject:[[[UIDevice currentDevice] identifierForVendor] UUIDString] forKey:@"UUID"];
+    
+    _advertiser = [[MCNearbyServiceAdvertiser alloc] initWithPeer:peer_id discoveryInfo:disc serviceType:@"hfw-socialcard"];
     _browser = [[MCNearbyServiceBrowser alloc] initWithPeer:peer_id serviceType:@"hfw-socialcard"];
     
     _advertiser.delegate = self;
@@ -160,35 +160,50 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
     
     
     MCSession *session = [[MCSession alloc] initWithPeer:peer_id securityIdentity:nil encryptionPreference:MCEncryptionRequired];
-    
-    
-    
     session.delegate = self;
     [sessions addObject:session];
     
-    if ([invites containsObject:peer]) {
+    // Get UUID from peer_id, discovered_peers
+    
+    NSString *uuid;
+    
+    if ([[discovered_peers valueForKey:@"peer_id"] containsObject:peer]) {
+        NSInteger index = [[discovered_peers valueForKey:@"peer_id"] indexOfObject:peer];
+        uuid = [[discovered_peers valueForKey:@"uuid"] objectAtIndex:index];
+    }
+    else{
+        NSLog(@"UUID not found in discovered_peers");
+        return;
+    }
+    
+    if ([[invites valueForKey:@"uuid"] containsObject:uuid]) {
+        NSUInteger index = [[invites valueForKey:@"peer_id"] indexOfObject:peer];
+        
+        
+        SCInvite *peerInvite = [invites objectAtIndex:index];
+        
         NSLog(@"Accepting Invite From %@...", peer);
+        
         
         [[KeenClient sharedClient] addEvent:@{@"type": @"accept"} toEventCollection:@"invite_peer" error:nil];
 
 
         // Invite was already received, accept it
-        NSUInteger index = [invites indexOfObject:peer];
-        void (^invitationHandler)(BOOL, MCSession *) = [inviteBlocks objectAtIndex:index];
+        void (^invitationHandler)(BOOL, MCSession *) = peerInvite.invitationHandler;
         
         invitationHandler(YES, session);
+        [invites removeObject:peerInvite];
         [sentInvites addObject:peer];
-        
-        [inviteBlocks removeObjectAtIndex:index];
-        [invites removeObjectAtIndex:index];
     }
-    else{
+    else if(![sentInvites containsObject:peer]){
         // No invite yet, send one
-        NSLog(@"Sending Invite...");
+        NSLog(@"Sending Invite To %@...", peer);
         [[KeenClient sharedClient] addEvent:@{@"type": @"invite"} toEventCollection:@"invite_peer" error:nil];
 
-        [_browser invitePeer:peer toSession:session withContext:nil timeout:30];
         [sentInvites addObject:peer];
+
+        
+        [_browser invitePeer:peer toSession:session withContext:[[[[UIDevice currentDevice] identifierForVendor] UUIDString] dataUsingEncoding:NSUTF8StringEncoding] timeout:30];
         
         
     }
@@ -282,7 +297,6 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
         }
     }
     
-    CFRelease(addressBook);
     
     [_delegate didFinishAddingContact:contact];
 }
@@ -319,17 +333,36 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
 
 -(void)session:(MCSession *)session peer:(MCPeerID *)peerID didChangeState:(MCSessionState)state{
     NSLog(@"Session %@ peer: %@ \n changed state:%d", session, peerID, state);
-    [sentInvites removeObject:peerID];
+    //[sentInvites removeObject:peerID];
     [_delegate peer:peerID didChangeState:state];
     
+    if (state == 2) {
+        // Send contact data
+        [self sendContact:_contactInfo toPeer:peerID];
+        
+        NSInteger index = [[discovered_peers valueForKey:@"peer_id"] indexOfObject:peerID];
+        NSString *uuid = [(SCInvite*)[discovered_peers objectAtIndex:index] uuid];
+        
+        // Remove any UUIDs from invites
+        for (SCInvite *i in invites){
+            if ([i.uuid isEqualToString:uuid]) {
+                [invites removeObject:i];
+            }
+        }
+        
+        
+    }
 }
 
 -(void)session:(MCSession *)session didReceiveData:(NSData *)data fromPeer:(MCPeerID *)peerID{
-    //NSLog(@"Session received data: %@", [NSKeyedUnarchiver unarchiveObjectWithData:data]);
+    NSLog(@"Session received data: %@", [[NSKeyedUnarchiver unarchiveObjectWithData:data] class]);
     
+    
+    // Add check for sent UUID
     
     if (contactPermissions) {
-        //[self addContact:data];
+        [self addContact:data];
+        [self addContact:data];
     }
     else{
         [self showContactPermissions];
@@ -340,11 +373,20 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
 
 -(void)browser:(MCNearbyServiceBrowser *)browser foundPeer:(MCPeerID *)peerID withDiscoveryInfo:(NSDictionary *)info{
     NSLog(@"Found Peer:%@", peerID);
+    
+    SCInvite *invite = [[SCInvite alloc] initWithPeerID:peerID UUID:[info objectForKey:@"UUID"] block:nil];
+    [discovered_peers addObject:invite];
+    
     [_delegate foundPeer:peerID];
 }
 
 -(void)browser:(MCNearbyServiceBrowser *)browser lostPeer:(MCPeerID *)peerID{
     NSLog(@"Lost Peer:%@", peerID);
+    
+    if ([[discovered_peers valueForKey:@"peer_id"] containsObject:peerID]) {
+        [discovered_peers removeObjectAtIndex:[[discovered_peers valueForKey:@"peer_id"] indexOfObject:peerID]];
+    }
+    
     [_delegate lostPeer:peerID];
 }
 
@@ -355,14 +397,20 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
 #pragma mark MCNearbyServiceAdvertiser Delegate methods
 
 -(void)advertiser:(MCNearbyServiceAdvertiser *)advertiser didReceiveInvitationFromPeer:(MCPeerID *)peerID withContext:(NSData *)context invitationHandler:(void (^)(BOOL, MCSession *))invitationHandler{
+    NSString *uuid = [[NSString alloc] initWithData:context encoding:NSUTF8StringEncoding];
+
     NSLog(@"Received Invite from: %@", peerID);
+
     
-    [invites addObject:peerID];
-    [inviteBlocks addObject:invitationHandler];
+    SCInvite *invite = [[SCInvite alloc] initWithPeerID:peerID UUID:uuid block:invitationHandler];
+    [invites addObject:invite];
+    
+    
     
     if ([sentInvites containsObject:peerID]) {
-        float r = ((arc4random() % 60))/10;
-        [self performSelector:@selector(invitePeer:) withObject:peerID afterDelay:r];
+        //NSLog(@"Delaying Accept Invite...");
+        float r = ((arc4random() % 80))/10;
+        [self performSelector:@selector(invitePeer:) withObject:peerID afterDelay:0];
     }
 
 }

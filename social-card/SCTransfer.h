@@ -24,8 +24,9 @@
 @interface SCTransfer : NSObject <MCNearbyServiceAdvertiserDelegate, MCNearbyServiceBrowserDelegate, MCSessionDelegate, UIAlertViewDelegate>{
     NSMutableArray *sessions;
     NSMutableArray *invites;
-    NSMutableArray *inviteBlocks;
+    NSMutableArray *connectedPeers;
     NSMutableArray *sentInvites;
+    NSMutableArray *discovered_peers; // Array of SCInvites that pairs peerID with UUID
         
     ABAddressBookRef addressBook;
     BOOL contactPermissions;
