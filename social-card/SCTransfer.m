@@ -39,7 +39,7 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
         invites = [NSMutableArray new];
         sentInvites = [NSMutableArray new];
         discovered_peers = [NSMutableArray new];
-
+        connectedPeers = [NSMutableArray new];
         
         
         
@@ -333,24 +333,47 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
 
 -(void)session:(MCSession *)session peer:(MCPeerID *)peerID didChangeState:(MCSessionState)state{
     NSLog(@"Session %@ peer: %@ \n changed state:%d", session, peerID, state);
-    //[sentInvites removeObject:peerID];
-    [_delegate peer:peerID didChangeState:state];
+    [sentInvites removeObject:peerID];
+    
+    NSInteger index = [[discovered_peers valueForKey:@"peer_id"] indexOfObject:peerID];
+    NSString *uuid = [(SCInvite*)[discovered_peers objectAtIndex:index] uuid];
+
     
     if (state == 2) {
-        // Send contact data
-        [self sendContact:_contactInfo toPeer:peerID];
         
-        NSInteger index = [[discovered_peers valueForKey:@"peer_id"] indexOfObject:peerID];
-        NSString *uuid = [(SCInvite*)[discovered_peers objectAtIndex:index] uuid];
         
-        // Remove any UUIDs from invites
-        for (SCInvite *i in invites){
-            if ([i.uuid isEqualToString:uuid]) {
-                [invites removeObject:i];
+        NSLog(@"Connected Peers: %@", connectedPeers);
+        
+        // Check if already connected
+        if ([[connectedPeers valueForKey:@"uuid"] containsObject:uuid] ) {
+            NSLog(@"Already connected, disconnecting...");
+            [session disconnect];
+        }
+        else{
+            NSLog(@"Connected");
+            [_delegate peer:peerID didChangeState:state];
+            
+            [connectedPeers addObject:(SCInvite*)[discovered_peers objectAtIndex:index]];
+            
+            // Send contact data
+            [self sendContact:_contactInfo toPeer:peerID];
+            
+            
+            
+            // Remove any UUIDs from invites
+            for (SCInvite *i in invites){
+                if ([i.uuid isEqualToString:uuid]) {
+                    [invites removeObject:i];
+                }
             }
+
         }
         
-        
+    }
+    else if(state == 0){
+        [_delegate peer:peerID didChangeState:state];
+        [connectedPeers removeObject:(SCInvite*)[discovered_peers objectAtIndex:index]];
+
     }
 }
 
@@ -361,7 +384,6 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
     // Add check for sent UUID
     
     if (contactPermissions) {
-        [self addContact:data];
         [self addContact:data];
     }
     else{
@@ -405,13 +427,10 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
     SCInvite *invite = [[SCInvite alloc] initWithPeerID:peerID UUID:uuid block:invitationHandler];
     [invites addObject:invite];
     
-    
-    
     if ([sentInvites containsObject:peerID]) {
-        //NSLog(@"Delaying Accept Invite...");
-        float r = ((arc4random() % 80))/10;
-        [self performSelector:@selector(invitePeer:) withObject:peerID afterDelay:0];
+        [self invitePeer:peerID];
     }
+
 
 }
 
