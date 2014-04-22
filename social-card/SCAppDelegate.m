@@ -8,16 +8,23 @@
 
 #import "SCAppDelegate.h"
 #import "SCTransfer.h"
-#import "TestFlight.h"
 #import <Crashlytics/Crashlytics.h>
+#import "KeenClient.h"
 
 @implementation SCAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
-    [TestFlight takeOff:@"aa5c85cd-7647-42a1-b18e-b354bcfc77a6"];
     [Crashlytics startWithAPIKey:@"5fc44a7ce50e8303b0f41c2e0e28c897fb86f2a0"];
+    
+    [KeenClient disableGeoLocation];
+    [KeenClient sharedClientWithProjectId:@"5347044373f4bb3191000002"
+                              andWriteKey:@"536ae2e09ae411cc4c68290832bcc6b647ff48328c7a76010126b7365840518c0418ff88c671aca582bae786ade9f93cd1d052f02593d6ed5bc5b1647a1926d8b1a90dc4454c9806a60d3cba5872727d6754005204d1cff73d1718a83522b18d77e6d0c9b5acfce48fab32ab72931b7e"
+                               andReadKey:@""];
+    
+    
+    
     
     return YES;
 }
@@ -32,24 +39,34 @@
 {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    
+    UIBackgroundTaskIdentifier taskId = [application beginBackgroundTaskWithExpirationHandler:^(void) {
+        NSLog(@"Background task is being expired.");
+    }];
+    
+    [[KeenClient sharedClient] uploadWithFinishedBlock:^(void) {
+        [application endBackgroundTask:taskId];
+    }];
+    
+    
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
-    // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    //NSLog(@"FOREGROUND");
+    [[[SCTransfer sharedInstance] delegate] clearPeers];
 
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    //NSLog(@"ACTIVE");
     
-    [[[SCTransfer sharedInstance] delegate] clearPeers];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
-    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    [[SCTransfer sharedInstance] stop];
 }
 
 @end

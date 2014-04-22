@@ -1,10 +1,13 @@
 PODS:
+  - KeenClient (3.2.6)
   - MBProgressHUD (0.8)
 
 DEPENDENCIES:
+  - KeenClient (~> 3.2)
   - MBProgressHUD (~> 0.8)
 
 SPEC CHECKSUMS:
+  KeenClient: 08ccf0b7522c872db3c51a09c3a0ab9b1c6a92e5
   MBProgressHUD: 2bbc6f470111daf7f3eaa4eb12b8cbf01c4c0622
 
 COCOAPODS: 0.29.0

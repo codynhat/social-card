@@ -11,6 +11,7 @@
 #import "SCFindPeopleViewController.h"
 #import "UIColor+SCColor.h"
 #import "UIImage+Resize.h"
+#import "KeenClient.h"
 
 @interface SCContactInfoViewController ()
 
@@ -36,6 +37,7 @@
     self.navigationItem.hidesBackButton = YES;
     [self.navigationItem.rightBarButtonItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:@"Play" size:18.0], NSFontAttributeName, [UIColor scTextColor], NSForegroundColorAttributeName, nil] forState:UIControlStateNormal];
     
+    NSDictionary *event;
 
     
     
@@ -45,7 +47,8 @@
     
     if ([scTransfer contactInfo]) {
         NSDictionary *contact = [NSKeyedUnarchiver unarchiveObjectWithData:[scTransfer contactInfo]];
-        
+        [self.navigationItem.rightBarButtonItem setTitle:@"Save"];
+
         [firstNameField setText:[contact objectForKey:@"first_name"]];
         [lastNameField setText:[contact objectForKey:@"last_name"]];
         [numberField setText:[contact objectForKey:@"phone_number"]];
@@ -55,7 +58,16 @@
         if (prof_pic) {
             [_profButton setImage:prof_pic forState:UIControlStateNormal];
         }
+        
+        event = [NSDictionary dictionaryWithObjectsAndKeys:@"update_contact", @"view_name", nil];
+
     }
+    else{
+        event = [NSDictionary dictionaryWithObjectsAndKeys:@"start_view", @"view_name", nil];
+        
+    }
+    
+    [[KeenClient sharedClient] addEvent:event toEventCollection:@"page_views" error:nil];
     
     
 }
@@ -116,14 +128,24 @@
     [statusLabel setText:@""];
     
 
+    NSMutableDictionary *event = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:(firstNameField.text.length == 0)], @"first_name", [NSNumber numberWithBool:(lastNameField.text.length == 0)], @"last_name", [NSNumber numberWithBool:(numberField.text.length == 0)], @"phone_number", nil];
+
     // Check if all fields are valid
     if (firstNameField.text.length == 0 || lastNameField.text.length == 0 || numberField.text.length == 0) {
         UIScrollView *scrollView = (UIScrollView*)self.view;
         [scrollView scrollRectToVisible:CGRectMake(0, statusLabel.frame.origin.y+216+64, statusLabel.frame.size.width, statusLabel.frame.size.height) animated:YES];
 
         [statusLabel setText:@"Please enter a value in every field."];
+        [event setObject:[NSNumber numberWithBool:NO] forKey:@"success"];
+        
         return;
     }
+    else{
+        [event setObject:[NSNumber numberWithBool:YES] forKey:@"success"];
+    }
+
+    [[KeenClient sharedClient] addEvent:event toEventCollection:@"info_save" error:nil];
+
     
     
     

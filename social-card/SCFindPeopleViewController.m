@@ -10,6 +10,7 @@
 #import "SCPersonCell.h"
 #import "SCContactInfoViewController.h"
 #import "UIColor+SCColor.h"
+#import "KeenClient.h"
 
 @interface SCFindPeopleViewController ()
 
@@ -60,6 +61,8 @@
 
 -(void)showText:(NSData*)contact{
     NSDictionary *contactInfo = [NSKeyedUnarchiver unarchiveObjectWithData:contact];
+    
+    NSMutableDictionary *event = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:NO], @"can_send", nil];
 
     if ([MFMessageComposeViewController canSendText] && [MFMessageComposeViewController canSendAttachments] && [MFMessageComposeViewController isSupportedAttachmentUTI:@"public.vcard"]) {
         MFMessageComposeViewController *vc = [[MFMessageComposeViewController alloc] init];
@@ -74,8 +77,12 @@
         [vc addAttachmentData:[[[SCTransfer sharedInstance] vCardRepresentation] dataUsingEncoding:NSUTF8StringEncoding] typeIdentifier:@"public.vcard" filename:[NSString stringWithFormat:@"%@%@.vcf", [myContact objectForKey:@"first_name"], [myContact objectForKey:@"last_name"]]];
         
         [self presentViewController:vc animated:YES completion:nil];
+        
+        [event setObject:[NSNumber numberWithBool:NO] forKey:@"can_send"];
     }
     
+    [[KeenClient sharedClient] addEvent:event toEventCollection:@"show_text" error:nil];
+
 }
 
 
@@ -118,18 +125,20 @@
         cell.profPic.layer.borderColor = [[UIColor scBackgroundColor] CGColor];
         cell.profPic.layer.cornerRadius = (cell.profPic.frame.size.width/2);
         
+        [cell.check setImage:nil];
+        
         NSArray *p;
         if (indexPath.section == 0) {
             // Connected Peers
             p = connectedPeers;
             
-            cell.name.textColor = [UIColor scGreenColor];
+            [cell.check setImage:[UIImage imageNamed:@"Checkmark"]];
+            
             
         }
         else{
             // Discovered Peers
             p = peers;
-            cell.name.textColor = [UIColor blackColor];
         }
         
         MCPeerID *peer_id = [p objectAtIndex:indexPath.row];
@@ -147,7 +156,7 @@
         cell.profPic.image = nil;
         cell.name.text = @"Add Other Person...";
         cell.name.font = [UIFont boldSystemFontOfSize:18.0];
-        cell.name.textColor = [UIColor blackColor];
+        [cell.check setImage:nil];
         
     }
     
@@ -197,6 +206,9 @@
         alert.alertViewStyle = UIAlertViewStylePlainTextInput;
         [alert show];
         
+        [[KeenClient sharedClient] addEvent:@{@"step": [NSNumber numberWithInt:1]} toEventCollection:@"add_other" error:nil];
+
+        
     }
 
 }
@@ -243,18 +255,14 @@
             [self.tableView reloadData];
         });
         
-        
-        // Send the contact
-        [[SCTransfer sharedInstance] sendContact:[[SCTransfer sharedInstance] contactInfo] toPeer:peerID];
+
     }
     else if (state == 0){
         // Disconnected
         
-        if ([peers containsObject:peerID]) {
-            [peers removeObject:peerID];
-        }
         if ([connectedPeers containsObject:peerID]) {
-            [peers removeObject:peerID];
+            [connectedPeers removeObject:peerID];
+            [peers addObject:peerID];
         }
         
         
@@ -318,6 +326,9 @@
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Last Name" message:@"What is their last name?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Next", nil];
             alert.alertViewStyle = UIAlertViewStylePlainTextInput;
             [alert show];
+            
+            [[KeenClient sharedClient] addEvent:@{@"step": [NSNumber numberWithInt:2]} toEventCollection:@"add_other" error:nil];
+
         }
         else if (count == 1) {
             last_name = [alertView textFieldAtIndex:0].text;
@@ -325,9 +336,13 @@
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Phone Number" message:@"What is their phone number?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Next", nil];
             alert.alertViewStyle = UIAlertViewStylePlainTextInput;
             [alert show];
+            
+            [[KeenClient sharedClient] addEvent:@{@"step": [NSNumber numberWithInt:3]} toEventCollection:@"add_other" error:nil];
+
         }
         else{
             //NSLog(@"NAME: %@ %@", first_name, last_name);
+
             phone_number = [alertView textFieldAtIndex:0].text;
             
             NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:@{@"first_name": first_name,
@@ -350,6 +365,14 @@
 
 -(void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result{
     [self dismissViewControllerAnimated:YES completion:nil];
+    
+    NSMutableDictionary *event = [NSMutableDictionary new];
+    
+    [event setObject:[NSNumber numberWithInt:result] forKey:@"result"];
+
+
+    [[KeenClient sharedClient] addEvent:event toEventCollection:@"text_sent" error:nil];
+
 }
 
 

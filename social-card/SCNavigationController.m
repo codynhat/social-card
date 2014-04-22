@@ -35,6 +35,8 @@
     [self.navigationBar setBarTintColor:[UIColor scBackgroundColor]];
     [self.navigationBar setTintColor:[UIColor scTextColor]];
     
+    [[UINavigationBar appearance] setShadowImage:[[UIImage alloc] init]];
+    
     [self checkForContactInfo];
 }
 

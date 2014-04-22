@@ -10,7 +10,6 @@
 
 @interface SCContactInfoViewController : UIViewController <UITextFieldDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate>
 
-- (void)keyboardOnScreen:(NSNotification *)notification;
 
 @property (weak, nonatomic) IBOutlet UIButton *profButton;
 -(void)showCameraSource:(NSInteger)index;

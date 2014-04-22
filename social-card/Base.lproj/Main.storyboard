@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="3S3-hx-veX">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="3S3-hx-veX">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -202,11 +202,24 @@
                                             <rect key="frame" x="12" y="7" width="30" height="30"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         </imageView>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="V0q-8U-BRn">
+                                            <rect key="frame" x="281" y="11" width="18" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="18" id="Y7U-sK-DD7"/>
+                                                <constraint firstAttribute="height" constant="21" id="gIH-WR-zeu"/>
+                                            </constraints>
+                                        </imageView>
                                     </subviews>
+                                    <constraints>
+                                        <constraint firstItem="V0q-8U-BRn" firstAttribute="top" secondItem="OjA-d0-9Ee" secondAttribute="top" constant="11" id="KHg-4V-DFc"/>
+                                        <constraint firstAttribute="trailing" secondItem="V0q-8U-BRn" secondAttribute="trailing" constant="21" id="rKL-nu-DQT"/>
+                                    </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <outlet property="activityIndicator" destination="oRa-Xu-H3u" id="5iE-zS-gCy"/>
+                                    <outlet property="check" destination="V0q-8U-BRn" id="vyD-V9-v8V"/>
                                     <outlet property="name" destination="GMa-eR-QFX" id="VqA-Xr-DSC"/>
                                     <outlet property="profPic" destination="WXF-HD-PFF" id="Y3s-iJ-6v3"/>
                                 </connections>
