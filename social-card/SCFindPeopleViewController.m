@@ -154,7 +154,7 @@
         
         cell.profPic.layer.borderWidth = 0.0;
         cell.profPic.image = nil;
-        cell.name.text = @"Add Other Person...";
+        cell.name.text = @"Add Someone Else...";
         cell.name.font = [UIFont boldSystemFontOfSize:18.0];
         [cell.check setImage:nil];
         
@@ -261,6 +261,7 @@
         // Disconnected
         
         if ([connectedPeers containsObject:peerID]) {
+
             [connectedPeers removeObject:peerID];
             [peers addObject:peerID];
         }

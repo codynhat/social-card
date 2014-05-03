@@ -13,8 +13,14 @@
 		C383E31C18B6C1AE001EECDF /* SCPersonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C383E31B18B6C1AE001EECDF /* SCPersonCell.m */; };
 		C394CFBB18D265FF007E4CC5 /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = C394CFBA18D265FF007E4CC5 /* UIImage+Resize.m */; };
 		C3A82F5518FDE1F700001A2F /* SCInvite.m in Sources */ = {isa = PBXBuildFile; fileRef = C3A82F5418FDE1F700001A2F /* SCInvite.m */; };
+		C3AA4248191056E800D5DF46 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3AA4247191056E800D5DF46 /* CoreText.framework */; };
+		C3AA424A191056ED00D5DF46 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3AA4249191056ED00D5DF46 /* QuartzCore.framework */; };
+		C3AA424C191056F600D5DF46 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3AA424B191056F600D5DF46 /* Security.framework */; };
+		C3AA424E191056FE00D5DF46 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3AA424D191056FE00D5DF46 /* SystemConfiguration.framework */; };
+		C3AA4256191059CA00D5DF46 /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3AA4252191059CA00D5DF46 /* HockeySDK.framework */; };
+		C3AA4257191059CA00D5DF46 /* HockeySDK.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = C3AA4254191059CA00D5DF46 /* HockeySDK.xcconfig */; };
+		C3AA4258191059CA00D5DF46 /* HockeySDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C3AA4255191059CA00D5DF46 /* HockeySDKResources.bundle */; };
 		C3AE39F618E3511D00E9AC5F /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C3AE39F518E3511D00E9AC5F /* libz.dylib */; };
-		C3AE39F918E3522000E9AC5F /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3AE39F818E3522000E9AC5F /* Crashlytics.framework */; };
 		C3AE39FB18E35B4000E9AC5F /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3AE39FA18E35B4000E9AC5F /* MessageUI.framework */; };
 		C3B8D59B18AADCCC00DE4B0A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3B8D59A18AADCCC00DE4B0A /* Foundation.framework */; };
 		C3B8D59D18AADCCC00DE4B0A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3B8D59C18AADCCC00DE4B0A /* CoreGraphics.framework */; };
@@ -61,8 +67,14 @@
 		C394CFBA18D265FF007E4CC5 /* UIImage+Resize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Resize.m"; sourceTree = "<group>"; };
 		C3A82F5318FDE1F700001A2F /* SCInvite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCInvite.h; sourceTree = "<group>"; };
 		C3A82F5418FDE1F700001A2F /* SCInvite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCInvite.m; sourceTree = "<group>"; };
+		C3AA4247191056E800D5DF46 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		C3AA4249191056ED00D5DF46 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		C3AA424B191056F600D5DF46 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		C3AA424D191056FE00D5DF46 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		C3AA4252191059CA00D5DF46 /* HockeySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HockeySDK.framework; sourceTree = "<group>"; };
+		C3AA4254191059CA00D5DF46 /* HockeySDK.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = HockeySDK.xcconfig; sourceTree = "<group>"; };
+		C3AA4255191059CA00D5DF46 /* HockeySDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = HockeySDKResources.bundle; sourceTree = "<group>"; };
 		C3AE39F518E3511D00E9AC5F /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
-		C3AE39F818E3522000E9AC5F /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		C3AE39FA18E35B4000E9AC5F /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		C3B8D59718AADCCC00DE4B0A /* social-card.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "social-card.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C3B8D59A18AADCCC00DE4B0A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -98,11 +110,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C3AA424E191056FE00D5DF46 /* SystemConfiguration.framework in Frameworks */,
+				C3AA424C191056F600D5DF46 /* Security.framework in Frameworks */,
+				C3AA424A191056ED00D5DF46 /* QuartzCore.framework in Frameworks */,
+				C3AA4248191056E800D5DF46 /* CoreText.framework in Frameworks */,
 				C3AE39FB18E35B4000E9AC5F /* MessageUI.framework in Frameworks */,
 				C3AE39F618E3511D00E9AC5F /* libz.dylib in Frameworks */,
 				C3B8D5D418AAE2A300DE4B0A /* CoreBluetooth.framework in Frameworks */,
-				C3AE39F918E3522000E9AC5F /* Crashlytics.framework in Frameworks */,
 				C3B8D59D18AADCCC00DE4B0A /* CoreGraphics.framework in Frameworks */,
+				C3AA4256191059CA00D5DF46 /* HockeySDK.framework in Frameworks */,
 				C3B8D59F18AADCCC00DE4B0A /* UIKit.framework in Frameworks */,
 				C3B8D59B18AADCCC00DE4B0A /* Foundation.framework in Frameworks */,
 				10363847498A49A1832F8413 /* libPods.a in Frameworks */,
@@ -122,6 +138,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C3AA4251191059CA00D5DF46 /* HockeySDK.embeddedframework */ = {
+			isa = PBXGroup;
+			children = (
+				C3AA4252191059CA00D5DF46 /* HockeySDK.framework */,
+				C3AA4253191059CA00D5DF46 /* Resources */,
+			);
+			name = HockeySDK.embeddedframework;
+			path = "social-card/HockeySDK-iOS/HockeySDK.embeddedframework";
+			sourceTree = "<group>";
+		};
+		C3AA4253191059CA00D5DF46 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				C3AA4254191059CA00D5DF46 /* HockeySDK.xcconfig */,
+				C3AA4255191059CA00D5DF46 /* HockeySDKResources.bundle */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		C3B8D58E18AADCCC00DE4B0A = {
 			isa = PBXGroup;
 			children = (
@@ -147,8 +182,12 @@
 		C3B8D59918AADCCC00DE4B0A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C3AA4251191059CA00D5DF46 /* HockeySDK.embeddedframework */,
+				C3AA424D191056FE00D5DF46 /* SystemConfiguration.framework */,
+				C3AA424B191056F600D5DF46 /* Security.framework */,
+				C3AA4249191056ED00D5DF46 /* QuartzCore.framework */,
+				C3AA4247191056E800D5DF46 /* CoreText.framework */,
 				C3AE39FA18E35B4000E9AC5F /* MessageUI.framework */,
-				C3AE39F818E3522000E9AC5F /* Crashlytics.framework */,
 				C3AE39F518E3511D00E9AC5F /* libz.dylib */,
 				C3B8D5D318AAE2A300DE4B0A /* CoreBluetooth.framework */,
 				C3B8D59A18AADCCC00DE4B0A /* Foundation.framework */,
@@ -247,7 +286,6 @@
 				C3B8D59418AADCCC00DE4B0A /* Frameworks */,
 				C3B8D59518AADCCC00DE4B0A /* Resources */,
 				8CF7975F74D44F7583511929 /* Copy Pods Resources */,
-				C3AE39F718E351E200E9AC5F /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -319,11 +357,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				C3B8D5B318AADCCC00DE4B0A /* Images.xcassets in Resources */,
+				C3AA4258191059CA00D5DF46 /* HockeySDKResources.bundle in Resources */,
 				C3ED0FDE18C92C490014D420 /* Play-Regular.ttf in Resources */,
 				C3ED0FDD18C92C490014D420 /* Play-Bold.ttf in Resources */,
 				C3B8D5A518AADCCC00DE4B0A /* InfoPlist.strings in Resources */,
 				C3ED0FDC18C92C490014D420 /* OFL.txt in Resources */,
 				C3B8D5AE18AADCCC00DE4B0A /* Main.storyboard in Resources */,
+				C3AA4257191059CA00D5DF46 /* HockeySDK.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -367,19 +407,6 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
-		};
-		C3AE39F718E351E200E9AC5F /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "./Crashlytics.framework/run 5fc44a7ce50e8303b0f41c2e0e28c897fb86f2a0 e9e3cccc669e86a7f4ca0e894d48e572e96e015601ed5ff9d9a7a8cdb28f3244";
 		};
 		C3B8D5CF18AADD1900DE4B0A /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -544,6 +571,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/social-card/HockeySDK-iOS/HockeySDK.embeddedframework",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "social-card/social-card-Prefix.pch";
@@ -569,6 +597,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/social-card/HockeySDK-iOS/HockeySDK.embeddedframework",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "social-card/social-card-Prefix.pch";

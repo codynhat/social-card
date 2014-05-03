@@ -25,6 +25,7 @@
     NSMutableArray *sessions;
     NSMutableArray *invites;
     NSMutableArray *connectedPeers;
+    NSMutableArray *disconnectingPeers;
     NSMutableArray *sentInvites;
     NSMutableArray *discovered_peers; // Array of SCInvites that pairs peerID with UUID
         

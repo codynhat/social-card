@@ -8,21 +8,23 @@
 
 #import "SCAppDelegate.h"
 #import "SCTransfer.h"
-#import <Crashlytics/Crashlytics.h>
 #import "KeenClient.h"
+#import <HockeySDK/HockeySDK.h>
 
 @implementation SCAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
-    [Crashlytics startWithAPIKey:@"5fc44a7ce50e8303b0f41c2e0e28c897fb86f2a0"];
     
     [KeenClient disableGeoLocation];
     [KeenClient sharedClientWithProjectId:@"5347044373f4bb3191000002"
                               andWriteKey:@"536ae2e09ae411cc4c68290832bcc6b647ff48328c7a76010126b7365840518c0418ff88c671aca582bae786ade9f93cd1d052f02593d6ed5bc5b1647a1926d8b1a90dc4454c9806a60d3cba5872727d6754005204d1cff73d1718a83522b18d77e6d0c9b5acfce48fab32ab72931b7e"
                                andReadKey:@""];
     
+    [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"79d069fcde9e9829267b9794c7b9e512"];
+    [[BITHockeyManager sharedHockeyManager] startManager];
+    [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
     
     
     

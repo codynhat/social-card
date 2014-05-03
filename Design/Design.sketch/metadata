@@ -14,9 +14,10 @@
 		<string>HelveticaNeue</string>
 		<string>Play</string>
 		<string>HelveticaNeue-Medium</string>
+		<string>HelveticaNeue-Light</string>
 	</array>
 	<key>length</key>
-	<integer>547018</integer>
+	<integer>1509811</integer>
 	<key>version</key>
 	<integer>36</integer>
 </dict>

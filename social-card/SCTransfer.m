@@ -40,7 +40,8 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
         sentInvites = [NSMutableArray new];
         discovered_peers = [NSMutableArray new];
         connectedPeers = [NSMutableArray new];
-        
+        disconnectingPeers = [NSMutableArray new];
+
         
         
         _contactInfo = [[NSUserDefaults standardUserDefaults] objectForKey:@"contactInfo"];
@@ -335,25 +336,38 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
     NSLog(@"Session %@ peer: %@ \n changed state:%d", session, peerID, state);
     [sentInvites removeObject:peerID];
     
-    NSInteger index = [[discovered_peers valueForKey:@"peer_id"] indexOfObject:peerID];
-    NSString *uuid = [(SCInvite*)[discovered_peers objectAtIndex:index] uuid];
+    NSInteger index;
+
+    if ([[discovered_peers valueForKey:@"peer_id"] containsObject:peerID]) {
+        index = [[discovered_peers valueForKey:@"peer_id"] indexOfObject:peerID];
+    }
+    else{
+        index = -1;
+    }
+    
+    NSString *uuid;
+    
+    if (index > -1) {
+        uuid = [(SCInvite*)[discovered_peers objectAtIndex:index] uuid];
+    }
+    
+    
+    NSLog(@"Connected Peers: %@", [connectedPeers valueForKey:@"peer_id"]);
 
     
     if (state == 2) {
-        
-        
-        NSLog(@"Connected Peers: %@", connectedPeers);
-        
+
         // Check if already connected
         if ([[connectedPeers valueForKey:@"uuid"] containsObject:uuid] ) {
             NSLog(@"Already connected, disconnecting...");
+            [disconnectingPeers addObject:uuid];
             [session disconnect];
         }
         else{
             NSLog(@"Connected");
             [_delegate peer:peerID didChangeState:state];
             
-            [connectedPeers addObject:(SCInvite*)[discovered_peers objectAtIndex:index]];
+            [connectedPeers addObject:[[SCInvite alloc] initWithPeerID:peerID UUID:uuid block:nil]];
             
             // Send contact data
             [self sendContact:_contactInfo toPeer:peerID];
@@ -371,9 +385,12 @@ static NSString *const SCServiceUUID = @"1C039F15-F35E-4EF4-9BEB-F6CA4FF2886C";
         
     }
     else if(state == 0){
-        [_delegate peer:peerID didChangeState:state];
-        [connectedPeers removeObject:(SCInvite*)[discovered_peers objectAtIndex:index]];
 
+        if (![disconnectingPeers containsObject:uuid]) {
+            [_delegate peer:peerID didChangeState:state];
+        }
+        [connectedPeers removeObject:(SCInvite*)[discovered_peers objectAtIndex:index]];
+        [disconnectingPeers removeObject:uuid];
     }
 }
 
